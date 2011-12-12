@@ -1,0 +1,14 @@
+<% (0..2).each do |year| %>
+<h1><%=Time.zone.now.year+year%>年</h2>
+<table class="bordered-table zebra-striped">
+    <tbody>
+    <% (0..2).each do |y| %>
+        <tr>
+        <% (1..4).each do |x| %>
+            <td><%=link_to "#{y*4+x}月刊", magzine_path(Date.new(Time.zone.now.year+year, y*4+x, 1)), :class=>"btn info large"%></td>
+        <% end %>
+        <tr>
+    <% end %>
+    </tbody>
+</table>
+<% end %>

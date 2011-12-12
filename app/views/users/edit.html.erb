@@ -1,0 +1,36 @@
+<section id="edit-user">
+    <div class="page-header">
+        <h1>编辑用户基本信息</h1>
+    </div>
+    <%= form_for(@user) do |f| %>
+        <fieldset>
+            <legend>编辑用户表单</legend>
+            <div class="row">
+                <div class="span8">
+                    <div class="clearfix">
+                        <%= f.label :name %>
+                        <div class="input"><%= f.text_field :name, :class=>"xlarge" %></div>
+                    </div>
+                    <div class="clearfix">
+                        <%= f.label :password %>
+                        <div class="input"><%= f.password_field :password, :class=>"xlarge" %></div>
+                    </div>
+                    <div class="clearfix">
+                        <%= f.label :password_confirmation, "Confirmation" %>
+                        <div class="input"><%= f.password_field :password_confirmation, :class=>"xlarge"%></div>
+                    </div>
+                </div>
+                <div class="span8">
+                    <%= render 'shared/error_messages', :object => f.object %>
+                </div>
+            </div>
+            <div class="actions">
+                <%= f.submit "Update", :class=>"btn primary"%>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Change Gravatar</legend>
+            <a href="http://gravatar.com/emails"><%= gravatar_for @user, :size=>120 %></a>
+        </fieldset>
+    <% end %>
+<section>

@@ -1,0 +1,20 @@
+<div class="page-header">
+    <h1><%= gravatar_for @user, :size => 50 %><%=@user.name%><small><%=Constants::Authorities[@user.authority]%></small></h1>
+</div>
+<table class="zebra-striped">
+    <tr><th>电邮</th><td><%=@user.email%></td></tr>
+    <% if editor_user? %>
+    <tr><th>策划任务</th><td><%=@user.as_editor.count%></td></tr>
+    <% elsif sales_user? %>
+    <tr><th>提交任务</th><td><%=@user.as_sales.count%></td></tr>
+    <% elsif editor_manager_user? %>
+    <tr><th>接收任务</th><td><%=@user.as_editor_manager.count%></td></tr>
+    <% end %>
+    <tr><th>联系人</th><td><%=@user.contacts.count%></td></tr>
+    <tr><th>报销</th><td><%=@user.expenses.count%></td></tr>
+    <tr><th>收到消息</th><td><%=@user.as_to_user.count%></td></tr>
+    <tr><th>发送消息</th><td><%=@user.as_from_user.count%></td></tr>
+    <tr><th>注册时间</th><td><%=@user.created_at%></td></tr>
+    <tr><th>最后登录</th><td><%=@user.login_at%></td></tr>
+    <tr><th>最后退出时间</th><td><%=@user.logout_at%></td></tr>
+</table>

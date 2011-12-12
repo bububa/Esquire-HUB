@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  msg: MyText
+  from_user_id: 1
+  to_user_id: 1
+  auto: false
+  unread: false
+
+two:
+  msg: MyText
+  from_user_id: 1
+  to_user_id: 1
+  auto: false
+  unread: false

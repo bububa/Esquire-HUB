@@ -1,0 +1,30 @@
+<div class="topbar">
+    <div id="loading" class="shadow" ><div class="spinner"></div>Loading...</div>
+    <div class="topbar-inner">
+        <div class="container-fluid">
+            <a href="<%=root_path%>" class="brand"><img src="/assets/images/esquire-logo.png" alt="esquire-logo" class="logo"> HUB<small class="label important">beta</small></a>
+            <ul class="nav">
+                <li class="<%= is_active?('pages', 'home')%>"><%= link_to "首页", root_path %></li>
+                <% if signed_in? %>
+                    <li class="<%= is_active?('articles', 'index')%>"><%= link_to "软文广告", articles_path %></li>
+                    <li class="<%= is_active?('contacts', 'index')%>"><%= link_to "联系人", contacts_path %></li>
+                    <li class="<%= is_active?('messages', 'index')%>" style="position:relative;"><%= link_to "消息", messages_path , :class=>"unread_count"%></li>
+                    <% if admin_user? %>
+                        <li class="<%= is_active?('users', 'index')%>"><%= link_to "用户管理", users_path %></li>
+                    <% end %>
+                <% end %>
+                <li class="<%= is_active?('pages', 'about')%>"><%= link_to "关于", about_path %></a></li>
+            </ul>
+            <p class="pull-right">
+                <% if signed_in? %>
+                    <span class="nav <%= is_active?('users', 'show')%>"><%= link_to current_user.name, profile_path %></span>
+                    <span class="nav <%= is_active?('users', 'edit')%>"><%= link_to "设置", edit_path %></span>
+                    <span class="nav <%= is_active?('sessions', 'destroy')%>"><%= link_to "退出", signout_path, :method => :delete %></span>
+                <% else %>
+                    <span class="nav <%= is_active?('sessions', 'new')%>"><%= link_to "登录", signin_path %></span>
+                    <span class="nav <%= is_active?('users', 'new')%>"><%= link_to "注册", signup_path %></span>
+                <% end %>
+            </p>
+        </div>
+    </div>
+</div>

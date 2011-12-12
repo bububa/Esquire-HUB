@@ -1,0 +1,32 @@
+<div class="page-header">
+    <h1>
+        联系人
+        <%=link_to "新建联系人", new_contact_path, :class=>"btn primary pull-right"%>
+    </h1>
+</div>
+<% if @contacts.nil? %>
+<div class="alert-message warning">
+  <a class="close" href="#">×</a>
+  <p>没有联系人</p>
+</div>
+<% else %>
+<table class="bordered-table zebra-striped">
+    <thead><tr><th>姓名</th><th>真实姓名</th><th>地址</th><th>电邮</th><th>身份证</th><th>银行账户</th><th>开户行</th><th>职业</th><th>修改</th><th>删除</th></tr></thead>
+    <tbody>
+    <% @contacts.each do |contact| %>
+    <tr>
+        <td><%=link_to_unless contact.comment.nil?, contact.name, "#", :rel=>("popover" unless contact.comment.nil?), "data-content"=>(simple_format(contact.comment) unless contact.comment.nil?) , "data-original-title"=>("备注" unless contact.comment.nil?)%></td>
+        <td><%=contact.realname%></td>
+        <td><%=contact.address%></td>
+        <td><%=contact.email%></td>
+        <td><%=contact.idcard%></td>
+        <td><%=contact.bankno%></td>
+        <td><%=contact.bank%></td>
+        <td><%=Constants::Careers[contact.career]%></td>
+        <td><%= link_to "修改", contact_edit_path(contact), :class=>"btn small secondary"%></td>
+        <td><%= link_to "删除", contact_delete_path(contact), :class=>"btn small danger"%></td>
+    </tr>
+    <% end %>
+    </tbody>
+</table>
+<% end %>

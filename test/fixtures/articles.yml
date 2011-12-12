@@ -1,0 +1,45 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  no: 2011-12-07 18:34:41
+  brand: MyString
+  pages: 1
+  subject: MyString
+  editor_manager_id: 1
+  sales_id: 1
+  editor_id: 
+  designer_id: 1
+  form: 1
+  position: 1
+  material_on: 2011-12-07
+  material_at: 2011-12-07 18:34:41
+  draft_on: 2011-12-07
+  draft_at: 2011-12-07 18:34:41
+  final_on: 2011-12-07
+  final_at: 2011-12-07 18:34:41
+  sales_sign_at: 2011-12-07 18:34:41
+  editor_sign_at: 2011-12-07 18:34:41
+  print_at: 2011-12-07 18:34:41
+  comment: MyText
+
+two:
+  no: 2011-12-07 18:34:41
+  brand: MyString
+  pages: 1
+  subject: MyString
+  editor_manager_id: 1
+  sales_id: 1
+  editor_id: 
+  designer_id: 1
+  form: 1
+  position: 1
+  material_on: 2011-12-07
+  material_at: 2011-12-07 18:34:41
+  draft_on: 2011-12-07
+  draft_at: 2011-12-07 18:34:41
+  final_on: 2011-12-07
+  final_at: 2011-12-07 18:34:41
+  sales_sign_at: 2011-12-07 18:34:41
+  editor_sign_at: 2011-12-07 18:34:41
+  print_at: 2011-12-07 18:34:41
+  comment: MyText

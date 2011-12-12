@@ -1,0 +1,23 @@
+<td><%= gravatar_for user, :size => 30 %></td>
+<td>
+<%= link_to_if(current_user?(user), user.name, profile_path) do
+    link_to user.name, user_edit_path(user)
+end %>
+</td>
+<td><%=user.email%></td>
+<td>
+<select id="<%=user.id%>" class="edit_user_authority">
+    <option value='0' <%="selected" if inactivated_user?(user)%>>未激活</option>
+    <option value='1' <%="selected" if admin_user?(user)%>>管理员</option>
+    <option value='2' <%="selected" if supervisor_user?(user)%>>Supervisor</option>
+    <option value='3' <%="selected" if editor_manager_user?(user)%>>策划主管</option>
+    <option value='4' <%="selected" if sales_manager_user?(user)%>>广告经理</option>
+    <option value='5' <%="selected" if editor_user?(user)%>>策划编辑</option>
+    <option value='6' <%="selected" if sales_user?(user)%>>客户经理</option>
+    <option value='7' <%="selected" if designer_user?(user)%>>美术编辑</option>
+</select>
+</td>
+<td>
+<%= link_to "delete", user, :method => :delete, :confirm => "You sure?",
+:title => "Delete #{user.name}", :class=>"btn small danger"%>
+</td>

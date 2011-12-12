@@ -1,0 +1,64 @@
+<section id="article">
+    <div class="page-header">
+        <h1>创建软文</h1>
+        <p>新创建软文仅策划经理、广告经理及客户经理本人可见</p>
+    </div>
+    <%= form_for(@article) do |f| %>
+        <fieldset>
+            <legend>软文表单</legend>
+            <div class="row">
+                <div class="span10">
+                    <div class="clearfix<%=' error' if f.object.errors.messages.has_key?(:no)%>">
+                        <%= f.label :no, "刊期" %>
+                        <div class="input"><%= f.date_select :no, {:use_short_month => 1, :order => [:year, :month]}, {:class=>"small"} %></div>
+                    </div>
+                    <div class="clearfix<%=' error' if f.object.errors.messages.has_key?(:brand)%>">
+                        <%= f.label :brand, "品牌" %>
+                        <div class="input"><%= f.text_field :brand, :class=>"xlarge" %></div>
+                    </div>
+                    <div class="clearfix<%=' error' if f.object.errors.messages.has_key?(:pages)%>">
+                        <%= f.label :pages, "页数[P]"%>
+                        <div class="input"><%= f.number_field :pages, :class=>"small" %></div>
+                    </div>
+                    <div class="clearfix<%=' error' if f.object.errors.messages.has_key?(:subject)%>">
+                        <%= f.label :subject, "主题" %>
+                        <div class="input"><%= f.text_field :subject, :class=>"xlarge" %></div>
+                    </div>
+                    <div class="clearfix<%=' error' if f.object.errors.messages.has_key?(:form)%>">
+                        <%= f.label :form, "编辑形式" %>
+                        <div class="input">
+                            <%= f.select :form, @forms, {}, {:class=>"medium"} %>
+                            <span class="help-block">【大片拍摄及手绘插画，需客户确认样片后方能执行。】</span>
+                        </div>
+                    </div>
+                    <div class="clearfix<%=' error' if f.object.errors.messages.has_key?(:position)%>">
+                        <%= f.label :position, "位置" %>
+                        <div class="input"><%= f.select :position, @positions, {}, {:class=>"medium"} %></div>
+                    </div>
+                    <div class="clearfix<%=' error' if f.object.errors.messages.has_key?(:material_on)%>">
+                        <%= f.label :material_on, "资料计划给到日期" %>
+                        <div class="input"><%= f.date_select :material_on, {:use_short_month => 1, :order => [:year, :month, :day]}, {:class=>"small"} %></div>
+                    </div>
+                    <% if sales_user? %>
+                    <div class="clearfix">
+                        <%= f.label :editor_manager_id, "策划主管" %>
+                        <div class="input"><%= f.select :editor_manager_id, @editor_managers, {}, {:class=>"medium"} %></div>
+                    </div>
+                    <% end %>
+                    <% if editor_manager_user? %>
+                    <div class="clearfix">
+                        <%= f.label :sales_id, "客户经理" %>
+                        <div class="input"><%= f.select :sales_id, @sales, {}, {:class=>"medium"} %></div>
+                    </div>
+                    <% end %>
+                </div>
+                <div class="span6">
+                    <%= render 'shared/error_messages', :object => f.object %>
+                </div>
+            </div>
+            <div class="actions">
+            <%= f.submit "创建", :class=>"btn primary"%>
+            </div>
+        </fieldset>
+    <% end %>
+</section>

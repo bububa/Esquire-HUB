@@ -1,0 +1,42 @@
+<div class="page-header">
+    <h1><%=@article.subject%>
+<% if sales_user? %>
+<%= link_to @article.canceled ? "激活" : "取消", "javascript:void(0)", {:class=>"btn #{@article.canceled ? "success" : "danger"} cancel_article pull-right", "data-loading-text"=>"执行中...", "data-complete-text"=>"激活", "data-cancel-text"=>"取消", "data-value"=>@article.id, :disabled=>@article.closed}%>
+    <% if @article.sales_sign_at.nil? %>
+        <%= link_to "修改", @article.canceled ? "#" : article_edit_path(@article), {:class=>"btn primary pull-right", :disabled=>@article.closed}%>
+    <% end %>
+<% elsif editor_manager_user? %>
+<%= link_to "修改", @article.canceled ? "#" : article_edit_path(@article), {:class=>"btn primary pull-right", :disabled=>(@article.canceled||@article.closed)}%>
+<%= link_to "报销", expenses_article_path(@article), {:class=>"btn secondary pull-right"}%>
+<% elsif editor_user? %>
+    <% if @article.editor_sign_at.nil? %>
+        <%= link_to "修改", @article.canceled ? "#" : article_edit_path(@article), {:class=>"btn primary pull-right", :disabled=>@article.canceled||@article.closed}%>
+    <% end %>
+    <%= link_to "报销", expenses_article_path(@article), {:class=>"btn secondary pull-right"}%>
+<% end %>
+    </h1>
+</div>
+<span class="help-block"><%=@article.no.year%>年<%=@article.no.month%>月刊, 创建时间 <%=@article.created_at.strftime("%Y-%m-%d %X")%>,  最后修改时间 <%=@article.updated_at.strftime("%Y-%m-%d %X")%></span>
+<table class="zebra-striped">
+    <tbody>
+        <tr><th>投放品牌</th><td><%=@article.brand%></td></tr>
+        <tr><th>页数</th><td><%=@article.pages%></td></tr>
+        <tr><th>编辑形式</th><td><%=Constants::Forms[@article.form]%></td></tr>
+        <tr><th>位置</th><td><%=Constants::Positions[@article.position]%></td></tr>
+        <tr><th>资料计划给到日期</th><td><%=@article.material_on unless @article.material_on.nil?%></td></tr>
+        <tr><th>资料实际给到日期</th><td><%=@article.material_at.strftime("%Y-%m-%d %X") unless @article.material_at.nil?%></td></tr>
+        <tr><th>初稿计划交付日期</th><td><%=@article.draft_on unless @article.draft_on.nil?%></td></tr>
+        <tr><th>初稿实际交付日期</th><td><%=@article.draft_at.strftime("%Y-%m-%d %X") unless @article.draft_at.nil?%></td></tr>
+        <tr><th>定稿计划交付日期</th><td><%=@article.final_on unless @article.final_on.nil?%></td></tr>
+        <tr><th>定稿确认日期</th><td><%=@article.final_at.strftime("%Y-%m-%d %X") unless @article.final_at.nil?%></td></tr>
+        <tr><th>销售下厂签字日期</th><td><%=@article.sales_sign_at.strftime("%Y-%m-%d %X") unless @article.sales_sign_at.nil?%></td></tr>
+        <tr><th>编辑下厂签字日期</th><td><%=@article.editor_sign_at.strftime("%Y-%m-%d %X") unless @article.editor_sign_at.nil?%></td></tr>
+        <tr><th>下厂日期</th><td><%=@article.print_at.strftime("%Y-%m-%d %X") unless @article.print_at.nil?%></td></tr>
+        <tr><th>策划主管</th><td><%=User.fetch(@article.editor_manager_id).name unless User.fetch(@article.editor_manager_id).nil? %></td></tr>
+        <tr><th>客户经理</th><td><%=User.fetch(@article.sales_id).name unless User.fetch(@article.sales_id).nil? %></td></tr>
+        <tr><th>策划编辑</th><td><%=User.fetch(@article.editor_id).name unless User.fetch(@article.editor_id).nil? %></td></tr>
+        <tr><th>美编</th><td><%=User.fetch(@article.designer_id).name unless User.fetch(@article.designer_id).nil? %></td></tr>
+    </tbody>
+</table>
+<h2>备注</h2>
+<blockquote><p><%=simple_format(@article.comment) unless @article.comment.nil?%></p></blockquote>

@@ -1,0 +1,67 @@
+<div class="page-header">
+    <h1>
+        广告软文
+        <% if sales_user? || editor_manager_user? %>
+        <%= link_to "创建软文策划", new_article_path, :class=>"btn primary pull-right"%>
+        <% end %>
+    </h1>
+    <span class="label switchbtn all">显示全部</span><span class="label switchbtn warning notstart">隐藏未分配项目</span><span class="label switchbtn important canceled">隐藏取消项目</span><span class="label switchbtn success printed">隐藏下厂项目</span><span class="label switchbtn notice closed">隐藏结案项目</span>
+</div>
+<%= will_paginate :class=>"apple_pagination" %>
+<table class="zebra-striped">
+    <thead>
+        <tr>
+            <th>主题</th>
+            <th>品牌</th>
+            <th>期刊</th>
+            <th>编辑形式</th>
+            <th>位置</th>
+            <th>页数[P]</th>
+            <% if supervisor_user? || admin_user? %>
+                <th>客户代表</th>
+                <th>策划编辑</th>
+                <th>美编</th>
+                <th>资料日期</th>
+                <th>初稿日期</th>
+                <th>定稿日期</th>
+                <th>下厂签字</th>
+                <th>下厂日期</th>
+            <% elsif editor_manager_user? %>
+                <th>客户代表</th>
+                <th>策划编辑</th>
+                <th>美编</th>
+                <th>资料日期</th>
+                <th>初稿日期</th>
+                <th>定稿日期</th>
+                <th>下厂签字</th>
+                <th>下厂日期</th>
+                <th>结案</th>
+            <% elsif sales_user? %>
+                <th>策划编辑</th>
+                <th>美编</th>
+                <th>资料日期</th>
+                <th>初稿日期</th>
+                <th>定稿日期</th>
+                <th>下厂签字</th>
+                <th>下厂日期</th>
+            <% elsif editor_user? %>
+                <th>客户代表</th>
+                <th>美编</th>
+                <th>资料日期</th>
+                <th>初稿日期</th>
+                <th>定稿日期</th>
+                <th>下厂签字<th>
+            <% elsif designer_user? %>
+                <th>客户代表</th>
+                <th>策划编辑</th>
+                <th>下厂日期</th>
+            <% end %>
+        </tr>
+    </thead>
+<% @articles.each do |article| %>
+    <tbody>
+    <tr class="<%='warning' if article.editor_id.nil?%> <%='important' if article.canceled %> <%='success' unless article.print_at.nil?%> <%='notice' if article.closed %>"><%= render article %></tr>
+    </tbody>
+<% end %>
+</table>
+<%= will_paginate :class=>"apple_pagination" %>

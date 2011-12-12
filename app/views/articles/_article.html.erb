@@ -1,0 +1,171 @@
+<td><%=link_to article.subject,  article, :title=>(article.subject if article.comment.nil?), :class=>"#{'label warning' if article.editor_id.nil?}#{'label important' if article.canceled}#{'label success' unless article.print_at.nil?}#{'label notice' if article.closed}", :rel=>("popover" unless article.comment.nil?), "data-content"=>(simple_format(article.comment) unless article.comment.nil?) , "data-original-title"=>article.subject%></td>
+<td><%=article.brand%></td>
+<td><%=link_to article.no, magzine_path(article.no), :title=>article.no %></td>
+<td><%=Constants::Forms[article.form]%></td>
+<td><%=Constants::Positions[article.position]%></td>
+<td><%=article.pages%></td>
+<% if supervisor_user? || admin_user? %>
+    <td><%=User.fetch(article.sales_id).name unless User.fetch(article.sales_id).nil? %></td>
+    <td><%=User.fetch(article.editor_id).name unless User.fetch(article.editor_id).nil?%></td>
+    <td><%=User.fetch(article.designer_id).name unless User.fetch(article.designer_id).nil?%></td>
+    <td>
+        <div><strong>预计: </strong>
+            <% if !article.material_on.nil? && article.material_at.nil? && article.material_on-Date.new(Time.zone.now.year, Time.zone.now.month, Time.zone.now.day)<1 %>
+                <span class="label warning"><%=article.material_on unless article.material_on.nil?%></span>
+            <% else %>
+                <%=article.material_on unless article.material_on.nil?%>
+            <% end %>
+        </div>
+        <div><strong>实际: </strong><%=article.material_at.strftime("%Y-%m-%d %X") unless article.material_at.nil?%></div>
+    </td>
+    <td>
+        <div><strong>预计: </strong>
+            <% if !article.draft_on.nil? && article.draft_at.nil? && article.draft_on-Date.new(Time.zone.now.year, Time.zone.now.month, Time.zone.now.day)<1 %>
+                <span class="label warning"><%=article.draft_on unless article.draft_on.nil?%></span>
+            <% else %>
+                <%=article.draft_on unless article.draft_on.nil?%>
+            <% end %>
+        </div>
+        <div><strong>实际: </strong><%=article.draft_at.strftime("%Y-%m-%d %X") unless article.draft_at.nil?%></div>
+    </td>
+    <td>
+        <div><strong>预计: </strong>
+            <% if !article.final_on.nil? && article.final_at.nil? && article.final_on-Date.new(Time.zone.now.year, Time.zone.now.month, Time.zone.now.day)<1 %>
+                <span class="label warning"><%=article.final_on unless article.final_on.nil?%></span>
+            <% else %>
+                <%=article.final_on unless article.final_on.nil?%>
+            <% end %>
+        </div>
+        <div><strong>确认: </strong><%=article.final_at.strftime("%Y-%m-%d %X") unless article.final_at.nil?%></div>
+    </td>
+    <td>
+        <div><strong>销售: </strong><%=article.sales_sign_at.strftime("%Y-%m-%d %X") unless article.sales_sign_at.nil?%></div>
+        <div><strong>编辑: </strong><%=article.editor_sign_at.strftime("%Y-%m-%d %X") unless article.editor_sign_at.nil?%></div>
+    </td>
+    <td><%=article.print_at.strftime("%Y-%m-%d %X") unless article.print_at.nil?%></td>
+<% elsif editor_manager_user? %>
+    <td><%=User.fetch(article.sales_id).name unless User.fetch(article.sales_id).nil? %></td>
+    <td>
+        <%=select_tag("editor_id_#{article.id}", options_for_select([["选择编辑",'']] + @editors, article.editor_id), {:class=>"small edit_article_editor", :tabindex=>article.id, :disabled=>article.canceled})%>
+    </td>
+    <td>
+        <%=select_tag("designer_id_#{article.id}", options_for_select([["选择美编",'']] + @designers, article.designer_id), {:class=>"small edit_article_designer", :tabindex=>article.id, :disabled=>article.canceled})%>
+    </td>
+    <td>
+        <div><strong>预计: </strong>
+            <% if !article.material_on.nil? && article.material_at.nil? && article.material_on-Date.new(Time.zone.now.year, Time.zone.now.month, Time.zone.now.day)<1 %>
+                <span class="label warning"><%=article.material_on unless article.material_on.nil?%></span>
+            <% else %>
+                <%=article.material_on unless article.material_on.nil?%>
+            <% end %>
+        </div>
+        <div><strong>实际: </strong><%=article.material_at.strftime("%Y-%m-%d %X") unless article.material_at.nil?%></div>
+    </td>
+    <td>
+        <div><strong>预计: </strong>
+            <% if !article.draft_on.nil? && article.draft_at.nil? && article.draft_on-Date.new(Time.zone.now.year, Time.zone.now.month, Time.zone.now.day)<1 %>
+                <span class="label warning"><%=article.draft_on unless article.draft_on.nil?%></span>
+            <% else %>
+                <%=article.draft_on unless article.draft_on.nil?%>
+            <% end %>
+        </div>
+        <div><strong>实际: </strong><%=article.draft_at.strftime("%Y-%m-%d %X") unless article.draft_at.nil?%></div>
+    </td>
+    <td>
+        <div><strong>预计: </strong>
+            <% if !article.final_on.nil? && article.final_at.nil? && article.final_on-Date.new(Time.zone.now.year, Time.zone.now.month, Time.zone.now.day)<1 %>
+                <span class="label warning"><%=article.final_on unless article.final_on.nil?%></span>
+            <% else %>
+                <%=article.final_on unless article.final_on.nil?%>
+            <% end %>
+        </div>
+        <div><strong>确认: </strong><%=article.final_at.strftime("%Y-%m-%d %X") unless article.final_at.nil?%></div>
+    </td>
+    <td>
+        <div><strong>销售: </strong><%=article.sales_sign_at.strftime("%Y-%m-%d %X") unless article.sales_sign_at.nil?%></div>
+        <div><strong>编辑: </strong><%=article.editor_sign_at.strftime("%Y-%m-%d %X") unless article.editor_sign_at.nil?%></div>
+    </td>
+    <td><%=article.print_at.strftime("%Y-%m-%d %X") unless article.print_at.nil?%></td>
+    <td>
+        <%= link_to (article.closed ? "取消" : "结案"), "javascript:void(0)", {:tabindex=>article.id, :class=>"btn small #{article.closed ? "success" : "danger"} close_confirm", "data-loading-text"=>"执行中...", "data-complete-text"=>"取消", "data-cancel-text"=>"结案", :disabled=>article.print_at.nil?}%>
+    </td>
+<% elsif sales_user? %>
+    <td><%=User.fetch(article.editor_id).name unless User.fetch(article.editor_id).nil?%></td>
+    <td><%=User.fetch(article.designer_id).name unless User.fetch(article.designer_id).nil?%></td>
+    <td>
+        <div><strong>预计: </strong>
+            <% if !article.material_on.nil? && article.material_at.nil? && article.material_on-Date.new(Time.zone.now.year, Time.zone.now.month, Time.zone.now.day)<1 %>
+                <span class="label warning"><%=article.material_on unless article.material_on.nil?%></span>
+            <% else %>
+                <%=article.material_on unless article.material_on.nil?%>
+            <% end %>
+        </div>
+        <div><strong>实际: </strong><%=article.material_at.strftime("%Y-%m-%d %X") unless article.material_at.nil?%></div>
+    </td>
+    <td>
+        <div><strong>预计: </strong>
+            <% if !article.draft_on.nil? && article.draft_at.nil? && article.draft_on-Date.new(Time.zone.now.year, Time.zone.now.month, Time.zone.now.day)<1 %>
+                <span class="label warning"><%=article.draft_on unless article.draft_on.nil?%></span>
+            <% else %>
+                <%=article.draft_on unless article.draft_on.nil?%>
+            <% end %>
+        </div>
+        <div><strong>实际: </strong><%= link_to_if article.draft_at.nil?, (article.draft_at.nil? ? "收到" : article.draft_at.strftime("%Y-%m-%d %X")), "javascript:void(0)", :title=>"收到初稿", :class=>"btn small danger got_draft", :tabindex=>article.id, :disabled=>article.draft_on.nil? %></div>
+    </td>
+    <td>
+        <div><strong>预计: </strong>
+            <% if !article.final_on.nil? && article.final_at.nil? && article.final_on-Date.new(Time.zone.now.year, Time.zone.now.month, Time.zone.now.day)<1 %>
+                <span class="label warning"><%=article.final_on unless article.final_on.nil?%></span>
+            <% else %>
+                <%=article.final_on unless article.final_on.nil?%>
+            <% end %>
+        </div>
+        <div><strong>确认: </strong><%= link_to_if article.final_at.nil?, (article.final_at.nil? ? "收到" : article.final_at.strftime("%Y-%m-%d %X")), "javascript:void(0)", :title=>"定稿确认", :class=>"btn small danger got_final", :tabindex=>article.id, :disabled=>article.final_on.nil? %></div>
+    </td>
+    <td>
+        <%= link_to_if article.sales_sign_at.nil?, (article.sales_sign_at.nil? ? "签字" : article.sales_sign_at.strftime("%Y-%m-%d %X")), "javascript:void(0)", :title=>"下厂确认", :confirm=>"确认下厂?", :tabindex=>article.id, :class=>"btn small danger print_confirm", :disabled=>article.final_at.nil?%>
+    </td>
+    <td><%=article.print_at.strftime("%Y-%m-%d %X") unless article.print_at.nil?%></td>
+<% elsif editor_user? %>
+    <td><%=User.fetch(article.sales_id).name unless User.fetch(article.sales_id).nil?%></td>
+    <td><%=User.fetch(article.designer_id).name unless User.fetch(article.designer_id).nil?%></td>
+    <td>
+        <div><strong>预计: </strong>
+            <% if !article.material_on.nil? && article.material_at.nil? && article.material_on-Date.new(Time.zone.now.year, Time.zone.now.month, Time.zone.now.day)<1 %>
+                <span class="label warning"><%=article.material_on unless article.material_on.nil?%></span>
+            <% else %>
+                <%=article.material_on unless article.material_on.nil?%>
+            <% end %>
+        </div>
+        <div><strong>实际: </strong><%= link_to_if article.material_at.nil?, (article.material_at.nil? ? "收到" : article.material_at.strftime("%Y-%m-%d %X")), "javascript:void(0)", :title=>"确定收到资料", :class=>"btn small danger got_material", :tabindex=>article.id %></div>
+    </td>
+    <td>
+        <div><strong>预计: </strong>
+            <% if !article.draft_on.nil? && article.draft_at.nil? && article.draft_on-Date.new(Time.zone.now.year, Time.zone.now.month, Time.zone.now.day)<1 %>
+                <span class="label warning"><%=article.draft_on unless article.draft_on.nil?%></span>
+            <% else %>
+                <%=article.draft_on unless article.draft_on.nil?%>
+            <% end %>
+        </div>
+        <div><strong>实际: </strong><%=article.draft_at.strftime("%Y-%m-%d %X") unless article.draft_at.nil?%></div>
+    </td>
+    <td>
+        <div><strong>预计: </strong>
+            <% if !article.final_on.nil? && article.final_at.nil? && article.final_on-Date.new(Time.zone.now.year, Time.zone.now.month, Time.zone.now.day)<1 %>
+                <span class="label warning"><%=article.final_on unless article.final_on.nil?%></span>
+            <% else %>
+                <%=article.final_on unless article.final_on.nil?%>
+            <% end %>
+        </div>
+        <div><strong>确认: </strong><%=article.final_at.strftime("%Y-%m-%d %X") unless article.final_at.nil?%></div>
+    </td>
+    <td>
+        <%= link_to_if article.editor_sign_at.nil?, (article.editor_sign_at.nil? ? "签字" : article.editor_sign_at.strftime("%Y-%m-%d %X")), "javascript:void(0)", :title=>"下厂确认", :confirm=>"确认下厂?", :tabindex=>article.id, :class=>"btn small danger print_confirm", :disabled=>article.final_at.nil?%>
+    </td>
+<% elsif designer_user? %>
+    <td><%=User.fetch(article.sales_id).name unless User.fetch(article.sales_id).nil?%></td>
+    <td><%=User.fetch(article.editor_id).name unless User.fetch(article.editor_id).nil?%></td>
+    <td>
+        <%= link_to_if article.print_at.nil?, (article.print_at.nil? ? "确认下厂" : article.print_at.strftime("%Y-%m-%d %X")), "javascript:void(0)", :title=>"下厂确认", :confirm=>"确认下厂?", :tabindex=>article.id, :class=>"btn small danger print_at", :disabled=>(article.editor_sign_at.nil?||article.sales_sign_at.nil?)%>
+    </td>
+<% end %>

@@ -1,0 +1,106 @@
+<section id="article">
+    <div class="page-header">
+        <h1>修改软文</h1>
+        <p>新创建软文仅策划经理、广告经理及客户经理本人可见</p>
+    </div>
+    <%= form_for(@article) do |f| %>
+        <fieldset>
+            <legend>软文表单</legend>
+            <div class="row">
+                <div class="span12">
+                    <div class="clearfix<%=' error' if f.object.errors.messages.has_key?(:no)%>">
+                        <%= f.label :no, "刊期" %>
+                        <div class="input"><%= f.date_select :no, {:use_short_month => 1, :order => [:year, :month]}, {:class=>"small", :disabled=>!@article.editor.nil?} %></div>
+                    </div>
+                    <div class="clearfix<%=' error' if f.object.errors.messages.has_key?(:brand)%>">
+                        <%= f.label :brand, "品牌" %>
+                        <div class="input"><%= f.text_field :brand, :class=>"xlarge", :disabled=>(editor_user? || sales_user? && !User.fetch(@article.editor_id).nil?)%></div>
+                    </div>
+                    <div class="clearfix<%=' error' if f.object.errors.messages.has_key?(:pages)%>">
+                        <%= f.label :pages, "页数[P]"%>
+                        <div class="input"><%= f.number_field :pages, :class=>"small", :disabled=>(editor_user? || sales_user? && !User.fetch(@article.editor_id).nil?)%></div>
+                    </div>
+                    <div class="clearfix<%=' error' if f.object.errors.messages.has_key?(:subject)%>">
+                        <%= f.label :subject, "主题" %>
+                        <div class="input"><%= f.text_field :subject, :class=>"xlarge", :disabled=>(editor_user? || sales_user? && !User.fetch(@article.editor_id).nil?)%></div>
+                    </div>
+                    <div class="clearfix<%=' error' if f.object.errors.messages.has_key?(:form)%>">
+                        <%= f.label :form, "编辑形式" %>
+                        <div class="input">
+                            <%= f.select :form, @forms, {}, {:class=>"medium", :disabled=>(editor_user? || sales_user? && !User.fetch(@article.editor_id).nil?)} %>
+                            <span class="help-block">【大片拍摄及手绘插画，需客户确认样片后方能执行。】</span>
+                        </div>
+                    </div>
+                    <div class="clearfix<%=' error' if f.object.errors.messages.has_key?(:position)%>">
+                        <%= f.label :position, "位置" %>
+                        <div class="input"><%= f.select :position, @positions, {}, {:class=>"medium", :disabled=>(editor_user? || sales_user? && !User.fetch(@article.editor_id).nil?)} %></div>
+                    </div>
+                    <% if sales_user? %>
+                    <div class="clearfix<%=' error' if f.object.errors.messages.has_key?(:material_on)%>">
+                        <%= f.label :material_on, "资料计划给到日期" %>
+                        <div class="input"><%= f.date_select :material_on, {:use_short_month => 1, :order => [:year, :month, :day]}, {:class=>"small", :disabled=>!@article.material_at.nil?} %></div>
+                    </div>
+                        <% unless @article.draft_on.nil? %>
+                            <div class="clearfix">
+                                <%= f.label :draft_at, "初稿实际交付日期" %>
+                                <div class="input"><%= f.date_select :draft_at, {:use_short_month => 1, :order => [:year, :month, :day]}, {:class=>"small", :disabled=>!@article.final_at.nil?} %></div>
+                            </div>
+                        <% end %>
+                        <% unless @article.final_on.nil? %>
+                            <div class="clearfix">
+                                <%= f.label :final_at, "定稿实际交付日期" %>
+                                <div class="input"><%= f.datetime_select :final_at, {:use_short_month => 1, :order => [:year, :month, :day]}, {:class=>"small", :disabled=>!@article.sales_sign_at.nil?} %></div>
+                            </div>
+                        <% end %>
+                    <% end %>
+                    <% if editor_user? %>
+                    <div class="clearfix">
+                        <%= f.label :material_at, "资料实际给到日期" %>
+                        <div class="input"><%= f.datetime_select :material_at, {:use_short_month => 1, :order => [:year, :month, :day]}, {:class=>"small", :disabled=>!@article.draft_at.nil?} %></div>
+                    </div>
+                    <div class="clearfix">
+                        <%= f.label :draft_on, "初稿计划交付日期" %>
+                        <div class="input"><%= f.date_select :draft_on, {:use_short_month => 1, :order => [:year, :month, :day]}, {:class=>"small", :disabled=>!@article.draft_at.nil?} %></div>
+                    </div>
+                        <% unless @article.draft_at.nil? %>
+                            <div class="clearfix">
+                                <%= f.label :final_on, "定稿计划交付日期" %>
+                                <div class="input"><%= f.date_select :final_on, {:use_short_month => 1, :order => [:year, :month, :day]}, {:class=>"small", :disabled=>!@article.final_at.nil?} %></div>
+                            </div>
+                        <% end %>
+                    <% end %>
+                    <% if editor_manager_user? %>
+                    <div class="clearfix">
+                        <%= f.label :sales_id, "客户经理" %>
+                        <div class="input">
+                            <%= f.select :sales_id, options_for_select([["选择客户经理",'']] + @sales, @article.sales_id), {:class=>"medium"}, :disabled=>!editor_manager_user? %>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <%= f.label :editor_id, "策划编辑" %>
+                        <div class="input">
+                            <%= f.select :editor_id, options_for_select([["选择编辑",'']] + @editors, @article.editor_id), {:class=>"medium"}, :disabled=>!editor_manager_user? %>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <%= f.label :designer_id, "美编" %>
+                        <div class="input"><%= f.select :designer_id, options_for_select([["选择美编",'']] + @designers, @article.designer_id), {:class=>"medium"}, :disabled=>!editor_manager_user? %></div>
+                    </div>
+                    <% end %>
+                    <% if editor_manager_user? || editor_user? %>
+                    <div class="clearfix">
+                        <%= f.label :comment, "备注" %>
+                        <div class="input"><%= f.text_area :comment, {:size=>"100x6", :class=>"xlarge"}%></div>
+                    </div>
+                    <% end %>
+                </div>
+                <div class="span4">
+                    <%= render 'shared/error_messages', :object => f.object %>
+                </div>
+            </div>
+            <div class="actions">
+            <%= f.submit "提交修改", :class=>"btn primary"%>
+            </div>
+        </fieldset>
+    <% end %>
+</section>

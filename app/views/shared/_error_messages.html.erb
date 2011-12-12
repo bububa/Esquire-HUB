@@ -1,0 +1,13 @@
+<% if object.errors.any? %>
+<div id="error_explanation" class="alert-message block-message error">
+    <p>
+        <strong><%= pluralize(object.errors.count, "error") %> prohibited this user from being saved:</strong><br/>
+        There were problems with the following fields:
+    </p>
+    <ul>
+    <% object.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+    <% end %>
+    </ul>
+</div>
+<% end %>

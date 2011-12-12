@@ -1,0 +1,37 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  author: MyString
+  realname: MyString
+  address: MyString
+  email: MyString
+  idcard: MyString
+  article_id: 1
+  text_count: 1
+  fee_per_word: 1.5
+  pages: 1
+  fee_per_page: 1.5
+  total_fee: 1.5
+  tax: 1.5
+  paid: 1.5
+  bankno: MyString
+  bank: MyString
+  user_id: 1
+
+two:
+  author: MyString
+  realname: MyString
+  address: MyString
+  email: MyString
+  idcard: MyString
+  article_id: 1
+  text_count: 1
+  fee_per_word: 1.5
+  pages: 1
+  fee_per_page: 1.5
+  total_fee: 1.5
+  tax: 1.5
+  paid: 1.5
+  bankno: MyString
+  bank: MyString
+  user_id: 1

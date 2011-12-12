@@ -1,0 +1,74 @@
+<div class="page-header">
+    <h1><%=link_to @article.subject, @article%> 报销类目</h1>
+</div>
+<ul class="tabs" data-tab="tabs">
+    <% Constants::ExpenseTypes.collect do |v, i|%>
+        <li class="<%='active' if Constants::ExpenseTypes.index(v)==0 %>"><a href="#<%=Constants::ExpenseTypes.index(v)%>"><%=v%></a></li>
+    <% end %>
+</ul>
+<div class="tab-content">
+    
+<% Constants::ExpenseTypes.collect do |v, i|%>
+    <div class="tab-pane <%='active' if Constants::ExpenseTypes.index(v)==0 %>" id="<%=Constants::ExpenseTypes.index(v)%>">
+        <% if @article.expenses.select { |x| x.exp_type == Constants::ExpenseTypes.index(v) }.count > 0 %>
+        <%=link_to "添加新#{v}报销", expense_new_path(@article, Constants::ExpenseTypes.index(v)), :class=>"btn primary", :disabled=>@article.closed%>
+        <table class="bordered-table zebra-striped">
+            <thead>
+                <tr>
+                    <% if Constants::ExpenseTypes.index(v) == 0 %>
+                    <th>职业</th>
+                    <% end %>
+                    <th><%= Constants::ExpenseTypes.index(v) == 0 ? "作者" : "联系人" %></th>
+                    <% if Constants::ExpenseTypes.index(v) == 0 %>
+                    <th>真实姓名</th>
+                    <% end %>
+                    <th>电邮</th>
+                    <th>身份证</th>
+                    <% if Constants::ExpenseTypes.index(v) == 0 %>
+                    <th>字数</th>
+                    <th>稿酬(元/千字)</th>
+                    <th>页数</th>
+                    <th>稿酬(元/张)</th>
+                    <% end %>
+                    <th>应付金额</th>
+                    <th>税额</th>
+                    <th>实领金额</th>
+                    <th>银行账号</th>
+                    <th>开户行</th>
+                    <th>修改</th>
+                    <th>删除</th>
+                </tr>
+            </thead>
+            <tbody>
+            <% @article.expenses.select { |x| x.exp_type == Constants::ExpenseTypes.index(v) }.each do |expense| %>
+            <tr>
+                <% if Constants::ExpenseTypes.index(v) == 0 %>
+                <td><%=Constants::Careers[expense.career]%></td>
+                <% end %>
+                <td><%=link_to expense.author, "#", :rel=>("popover" unless expense.comment.nil?), "data-content"=>(simple_format(expense.comment) unless expense.comment.nil?) , "data-original-title"=>("备注" unless expense.comment.nil?)%></td>
+                <% if Constants::ExpenseTypes.index(v) == 0 %>
+                <td><%=expense.realname%></td>
+                <% end %>
+                <td><%=expense.email%></td>
+                <td><%=expense.idcard%></td>
+                <% if Constants::ExpenseTypes.index(v) == 0 %>
+                <td><%=expense.text_count%></td>
+                <td><%=expense.fee_per_word%></td>
+                <td><%=expense.pages%></td>
+                <td><%=expense.fee_per_page%></td>
+                <% end %>
+                <td><%=expense.total_fee%></td><td><%=expense.tax%></td>
+                <td><%=expense.paid%></td>
+                <td><%=expense.bankno%></td>
+                <td><%=expense.bank%></td>
+                <td><%=link_to "修改", edit_expense_path(expense), :class=>"btn small secondary", :disabled=>@article.closed%></td>
+                <td><%=link_to "删除", expense_delete_path(expense), :class=>"btn small danger", :disabled=>@article.closed%></td>
+            </tr>
+            <% end %>
+            </tbody>
+        </table>
+        <% end %>
+        <%=link_to "添加新#{v}报销", expense_new_path(@article, Constants::ExpenseTypes.index(v)), :class=>"btn primary", :disabled=>@article.closed%>
+    </div>
+<% end %>
+</div>

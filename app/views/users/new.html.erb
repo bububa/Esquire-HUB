@@ -1,0 +1,38 @@
+<section id="signup">
+    <div class="page-header">
+        <h1>注册</h1>
+        <p>注册用户需要管理员激活才能登录</p>
+    </div>
+    <%= form_for(@user) do |f| %>
+        <fieldset>
+            <legend>用户注册表单</legend>
+            <div class="row">
+                <div class="span8">
+                    <div class="clearfix">
+                        <%= f.label :name %>
+                        <div class="input"><%= f.text_field :name, :class=>"xlarge" %></div>
+                    </div>
+                    <div class="clearfix">
+                        <%= f.label :email %>
+                        <div class="input"><%= f.email_field :email, :class=>"xlarge" %></div>
+                    </div>
+                    <div class="clearfix">
+                        <%= f.label :password %>
+                        <div class="input"><%= f.password_field :password, :class=>"xlarge" %></div>
+                    </div>
+                    <div class="clearfix">
+                        <%= f.label :password_confirmation, "Confirmation" %>
+                        <div class="input"><%= f.password_field :password_confirmation, :class=>"xlarge" %></div>
+                    </div>
+                </div>
+                <div class="span8">
+                    <%= render 'shared/error_messages', :object => f.object %>
+                </div>
+            </div>
+            <div class="actions">
+            <%= f.submit "Sign up", :class=>"btn primary"%>
+            <div class="pull-right"><%= link_to "Sign in", signin_path, :class=>"btn success"%></div>
+            </div>
+        </fieldset>
+    <% end %>
+</section>

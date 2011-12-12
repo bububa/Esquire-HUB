@@ -1,0 +1,58 @@
+<section id="contact">
+    <div class="page-header">
+        <h1>新建联系人</h1>
+    </div>
+    <%= form_for(@contact) do |f| %>
+        <fieldset>
+            <legend>联系人表单</legend>
+            <div class="row">
+                <div class="span10">
+                    <div class="clearfix">
+                        <%= f.label :career, "职业" %>
+                        <div class="input">
+                            <%= f.select :career, @careers, {}, {:class=>"medium choose_career"} %>
+                        </div>
+                    </div>
+                    <div class="clearfix<%=' error' if f.object.errors.messages.has_key?(:name)%>">
+                        <%= f.label :name, "名字" %>
+                        <div class="input"><%= f.text_field :name, :class=>"xlarge" %></div>
+                    </div>
+                    <div class="clearfix">
+                        <%= f.label :realname, "真实姓名" %>
+                        <div class="input"><%= f.text_field :realname, :class=>"xlarge" %></div>
+                    </div>
+                    <div class="clearfix">
+                        <%= f.label :idcard, "身份证"%>
+                        <div class="input"><%= f.text_field :idcard, :class=>"xlarge" %></div>
+                    </div>
+                    <div class="clearfix">
+                        <%= f.label :address, "地址"%>
+                        <div class="input"><%= f.text_field :address, :class=>"xlarge" %></div>
+                    </div>
+                    <div class="clearfix">
+                        <%= f.label :email, "电邮"%>
+                        <div class="input"><%= f.email_field :email, :class=>"xlarge" %></div>
+                    </div>
+                    <div class="clearfix">
+                        <%= f.label :bankno, "银行账号"%>
+                        <div class="input"><%= f.text_field :bankno, :class=>"xlarge" %></div>
+                    </div>
+                    <div class="clearfix">
+                        <%= f.label :bank, "开户行"%>
+                        <div class="input"><%= f.text_field :bank, :class=>"xlarge" %></div>
+                    </div>
+                    <div class="clearfix">
+                        <%= f.label :comment, "备注" %>
+                        <div class="input"><%= f.text_area :comment, {:size=>"100x6", :class=>"xlarge"}%></div>
+                    </div>
+                </div>
+                <div class="span5">
+                    <%= render 'shared/error_messages', :object => f.object %>
+                </div>
+            </div>
+            <div class="actions">
+            <%= f.submit "提交", :class=>"btn primary"%>
+            </div>
+        </fieldset>
+    <% end %>
+</section>
