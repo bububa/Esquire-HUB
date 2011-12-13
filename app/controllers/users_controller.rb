@@ -6,7 +6,7 @@ class UsersController < ApplicationController
   
   def index
     @title = "用户管理"
-    @users = User.paginate(:page => params[:page], :per_page=>30)
+    @users = User.fetch_all
   end
   
   def new
