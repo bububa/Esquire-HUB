@@ -8,6 +8,9 @@ class MessagesController < ApplicationController
   
   def unread_count
     count = Message.count_unread(current_user.id)
+    if count == 0
+      response.headers['Cache-Control'] = 'public, max-age=25912000'
+    end
     render :json=>{:unread=>count}
   end
   
@@ -37,7 +40,7 @@ class MessagesController < ApplicationController
     if @message.save
       flash[:success] = "消息发成功!"
       count = Message.count_unread(@message.to_user_id)
-      MessagesController.publish("user_message_count_#{@message.to_user_id}", {"unread"=>count.to_s})
+      #MessagesController.publish("user_message_count_#{@message.to_user_id}", {"unread"=>count.to_s})
     else
       flash[:error] = "消息发送失败!"
     end

@@ -347,7 +347,7 @@ $(document).ready(function(){
         });
         if (ids.length==0) 
         {
-            //unread_count();
+            unread_count();
             return;
         }
         $.ajax({
@@ -357,7 +357,7 @@ $(document).ready(function(){
             dataType: "json",
             success: function(data) {
                 console.log(data);
-                //unread_count();
+                unread_count();
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.log(textStatus);
@@ -534,5 +534,5 @@ $(document).ready(function(){
         e.preventDefault();
     });
     mark_read();
-    receive_message();
+    //receive_message();
 });
