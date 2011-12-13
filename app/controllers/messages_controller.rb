@@ -1,4 +1,5 @@
 # encoding: UTF-8
+
 class MessagesController < ApplicationController
   before_filter :authenticate, :only => [:index, :create, :destroy, :read]
   before_filter :correct_user, :only=>[:destroy, :read]
