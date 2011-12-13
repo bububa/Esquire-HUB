@@ -72,8 +72,8 @@ class MessagesController < ApplicationController
     )
     
     info = pubnub.publish({
-        'channel' => msg,
-        'message' => channel
+        'channel' => channel,
+        'message' => msg
     })
   end
   
