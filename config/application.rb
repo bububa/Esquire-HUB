@@ -46,7 +46,6 @@ module Esquire
     config.assets.version = '1.0'
     
     config.action_controller.perform_caching = true
-    config.cache_store = :file_store, Rails.root + "tmp/cache"
     config.time_zone = "Beijing"
   end
 end
