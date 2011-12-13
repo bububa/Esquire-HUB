@@ -8,9 +8,6 @@ class MessagesController < ApplicationController
   
   def unread_count
     count = Message.count_unread(current_user.id)
-    if count == 0
-      expires_in 24.hours, :public => true
-    end
     render :json=>{:unread=>count}
   end
   
