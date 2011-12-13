@@ -535,4 +535,5 @@ $(document).ready(function(){
         e.preventDefault();
     });
     mark_read();
+    receive_message();
 });
