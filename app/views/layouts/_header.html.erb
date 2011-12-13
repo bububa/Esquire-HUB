@@ -17,7 +17,7 @@
             </ul>
             <p class="pull-right">
                 <% if signed_in? %>
-                    <span class="nav <%= is_active?('users', 'show')%>"><%= link_to current_user.name, profile_path %></span>
+                    <span class="nav <%= is_active?('users', 'show')%>"><%= link_to current_user.name, profile_path, :class=>"profile_link", :tabindex=>current_user.id %></span>
                     <span class="nav <%= is_active?('users', 'edit')%>"><%= link_to "设置", edit_path %></span>
                     <span class="nav <%= is_active?('sessions', 'destroy')%>"><%= link_to "退出", signout_path, :method => :delete %></span>
                 <% else %>

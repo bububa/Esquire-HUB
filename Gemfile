@@ -15,7 +15,9 @@ gem 'gravatar_image_tag', '0.1.0'
 gem 'will_paginate'
 gem 'rack-contrib'
 
+# Heroku Add-Ons
 gem 'newrelic_rpm'
+gem 'pubnub-ruby'
 
 # Gems used only for assets and not required
 # in production environments by default.

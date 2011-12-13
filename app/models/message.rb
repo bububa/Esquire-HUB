@@ -7,4 +7,21 @@ class Message < ActiveRecord::Base
   
   validates :msg,  :presence => true
   
+  after_save :after_save
+  after_destroy :after_destroy
+  
+  def self.count_unread(user_id)
+    Rails.cache.fetch("User_Message_Count_#{user_id}") do 
+      Message.count(:conditions =>["to_user_id=? AND unread=?", user_id, true])
+    end
+  end
+  
+  def after_save
+    Rails.cache.delete("User_Message_Count_#{self.to_user_id}")
+  end
+
+  def after_destroy
+    Rails.cache.delete("User_Message_Count_#{self.to_user_id}")
+  end
+  
 end

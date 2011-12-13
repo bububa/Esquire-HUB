@@ -1,11 +1,13 @@
 # encoding: UTF-8
 
+require 'pubnub'
+
 class MessagesController < ApplicationController
   before_filter :authenticate, :only => [:index, :create, :destroy, :read]
   before_filter :correct_user, :only=>[:destroy, :read]
   
   def unread_count
-    count = Message.count(:conditions =>["to_user_id=? AND unread=?", current_user.id, true])
+    count = Message.count_unread(current_user.id)
     render :json=>{:unread=>count}
   end
   
@@ -23,6 +25,8 @@ class MessagesController < ApplicationController
   
   def mark_read
     Message.update_all({:unread=>false}, {:id=>params[:ids]})
+    logger.debug("User_Message_Count_#{current_user.id}")
+    Rails.cache.delete("User_Message_Count_#{current_user.id}")
     render :json=>{:ids=>params[:ids]}
   end
   
@@ -32,6 +36,8 @@ class MessagesController < ApplicationController
     @message = Message.new(params[:message]) 
     if @message.save
       flash[:success] = "消息发成功!"
+      count = Message.count_unread(@message.to_user_id)
+      MessagesController.publish("user_message_count_#{@message.to_user_id}", {:unread=>count, :type=>'have_new_messages'})
     else
       flash[:error] = "消息发送失败!"
     end
@@ -50,6 +56,25 @@ class MessagesController < ApplicationController
     else
       render :json=>nil
     end
+  end
+  
+  def self.publish(channel, msg)
+    publish_key   = ENV['PUBNUB_PUBLISH_KEY'] || 'demo'
+    subscribe_key = ENV['PUBNUB_SUBSCRIBE_KEY'] || 'demo'
+    secret_key    = ENV['PUBNUB_SECRET_KEY'] || ''
+    ssl_on        = false
+    
+    pubnub = Pubnub.new(
+        publish_key,
+        subscribe_key,
+        secret_key,
+        ssl_on
+    )
+    
+    info    = pubnub.publish({
+        'channel' => msg,
+        'message' => channel
+    })
   end
   
   private

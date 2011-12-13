@@ -298,6 +298,18 @@ $(document).ready(function(){
         });
     }
     
+    function update_unread(data)
+    {
+        console.log(JSON.stringify(data));
+        if (data.unread > 0)
+        {
+            $('.unread_count').html('消息<span class="label important">' + data.unread + '</span>');
+        }else{
+            $('.unread_count').html('消息');
+        }
+        setTimeout(unread_count, 1000*60);
+    }
+    
     function unread_count()
     {
         if ($('.unread_count').length==0) return;
@@ -306,17 +318,22 @@ $(document).ready(function(){
             url: '/unread_count', 
             dataType: "json",
             success: function(data) {
-                if (data.unread > 0)
-                {
-                    $('.unread_count').html('消息<span class="label important">' + data.unread + '</span>');
-                }else{
-                    $('.unread_count').html('消息');
-                }
-                setTimeout(unread_count, 1000*60);
+                update_unread(data);
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.log(textStatus);
             }
+        });
+    }
+    
+    function receive_message()
+    {
+        var channel = "user_message_count_" + $('a.profile_link').tabindex;
+        PUBNUB.subscribe({
+            channel: channel,
+            callback: update_unread,
+            connect: deferred.resolve,
+            error: deferred.fail
         });
     }
     
@@ -331,7 +348,7 @@ $(document).ready(function(){
         });
         if (ids.length==0) 
         {
-            unread_count();
+            //unread_count();
             return;
         }
         $.ajax({
@@ -341,7 +358,7 @@ $(document).ready(function(){
             dataType: "json",
             success: function(data) {
                 console.log(data);
-                unread_count();
+                //unread_count();
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.log(textStatus);

@@ -44,10 +44,8 @@ class User < ActiveRecord::Base
   end
 
   def after_save
-    logger.debug("save #{self.id}")
     Rails.cache.write("User_#{self.id}", self)
     unless self.login_at_changed? || self.logout_at_changed?
-      logger.debug("Delete all users cache")
       Rails.cache.delete("User_all")
     end
   end
