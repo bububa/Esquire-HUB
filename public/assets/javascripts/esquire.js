@@ -332,8 +332,7 @@ $(document).ready(function(){
         PUBNUB.subscribe({
             channel: channel,
             callback: update_unread,
-            connect: deferred.resolve,
-            error: deferred.fail
+            error: function() { console.log("Connection Lost"); }
         });
     }
     
