@@ -8,17 +8,14 @@ gem 'mysql2', '~> 0.3.10'
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
-group :production do
-  gem 'pg'
-end
-group :development, :test do
-  gem 'sqlite3'
-end
+gem 'pg'
 
 gem 'thin'
 gem 'gravatar_image_tag', '0.1.0'
 gem 'will_paginate'
 gem 'rack-contrib'
+
+gem 'newrelic_rpm'
 
 # Gems used only for assets and not required
 # in production environments by default.
