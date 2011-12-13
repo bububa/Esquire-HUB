@@ -328,7 +328,7 @@ $(document).ready(function(){
     
     function receive_message()
     {
-        var channel = "user_message_count_" + $('a.profile_link').tabindex;
+        var channel = "user_message_count_" + $('a.profile_link').attr('tabindex');
         PUBNUB.subscribe({
             channel: channel,
             callback: update_unread,
