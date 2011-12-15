@@ -13,7 +13,7 @@ class MessagesController < ApplicationController
   
   def index
     @message = Message.new
-    @users = Array[*User.fetch_all.select{ |x| (!admin_user?(x)||admin_user)&&!current_user?(x) }.collect {|v,i| [v.name, v.id] }]
+    @users = Array[*User.fetch_all.select{ |x| (!admin_user?(x)||admin_user?)&&!current_user?(x) }.collect {|v,i| [v.name, v.id] }]
     if params[:box] == "out"
       @conditions = ["from_user_id=?", current_user.id]
     else
