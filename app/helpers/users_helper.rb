@@ -1,4 +1,3 @@
-require 'gravatar_image_tag'
 
 module UsersHelper
   def gravatar_for(user, options = { :size => 50 }) 
