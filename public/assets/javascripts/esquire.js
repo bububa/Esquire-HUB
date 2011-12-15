@@ -310,8 +310,8 @@ $(document).ready(function(){
                 $('.unread_count').html('消息');
             }
         }
-        if (data.msg)
-        {
+        //if (data.msg)
+        //{
             $.gritter.add({
             	// (string | mandatory) the heading of the notification
             	title: '来自 ' + data.from,
@@ -320,9 +320,9 @@ $(document).ready(function(){
             	// (string | optional) the image to display on the left
             	//image: 'http://a0.twimg.com/profile_images/59268975/jquery_avatar_bigger.png',
             	// (bool | optional) if you want it to fade out on its own or just sit there
-            	sticky: false, 
+            	//sticky: false, 
             });
-        }
+        //}
         //setTimeout(unread_count, 1000*60);
     }
     
