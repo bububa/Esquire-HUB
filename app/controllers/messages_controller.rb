@@ -39,6 +39,10 @@ class MessagesController < ApplicationController
   def create
     params[:message][:from_user_id] = current_user.id
     params[:message][:unread] = true
+    MessagesController.new_message(params)
+  end
+  
+  def self.new_message(vars)
     @message = Message.new(params[:message]) 
     if @message.save
       flash[:success] = "消息发成功!"
@@ -47,7 +51,7 @@ class MessagesController < ApplicationController
     else
       flash[:error] = "消息发送失败!"
     end
-    redirect_to_box(params[:box])
+    redirect_to_box(params[:box]) if params.has_key?(:box)
   end
   
   def destroy
