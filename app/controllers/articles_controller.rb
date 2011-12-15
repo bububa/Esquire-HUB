@@ -55,8 +55,6 @@ class ArticlesController < ApplicationController
     params[:article][:closed] = false
     @article = Article.new(params[:article]) 
     if @article.save
-      #@message = Message.new({:from_user_id=>current_user.id, :to_user_id=>@article.editor_manager_id, :auto=>true, :unread=>true, :msg=>"#{current_user.name} 新建 #{@article.brand} 软文 \"#{@article.subject}\"."})
-      #@message.save
       msg = {:from_user_id=>current_user.id, :to_user_id=>@article.editor_manager_id, :auto=>true, :unread=>true, :msg=>"#{current_user.name} 新建 #{@article.brand} 软文 \"#{@article.subject}\"."}
       MessagesController::new_message({:message=>msg})
       flash[:success] = "创建软文成功!"
@@ -115,7 +113,8 @@ class ArticlesController < ApplicationController
     @article = Article.find(params[:id])
     if @article.update_attributes(attrs[:article])
       if editor_manager_user? && !attrs[:article][:editor_id].nil? && attrs[:article][:no].nil?
-        @message = Message.new({:from_user_id=>current_user.id, :to_user_id=>@article.editor.id, :auto=>true, :unread=>true, :msg=>"#{current_user.name} 分配 #{@article.brand} 软文 #{@article.subject} 给你."})
+        msg = {:from_user_id=>current_user.id, :to_user_id=>@article.editor.id, :auto=>true, :unread=>true, :msg=>"#{current_user.name} 分配 #{@article.brand} 软文 #{@article.subject} 给你."}
+        MessagesController::new_message({:message=>msg})
       end
       respond_to do |format|
         format.js {

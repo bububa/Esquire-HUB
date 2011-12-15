@@ -32,7 +32,7 @@ class UsersController < ApplicationController
       @user = current_user
     else
       @user = User.fetch(params[:id])
-      redirect_to(root_path) unless ( current_user?(@user) || current_user.admin? )
+      redirect_to(root_path) unless ( current_user?(@user) || admin_user? )
     end
     @title = @user.name
   end
