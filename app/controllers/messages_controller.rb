@@ -1,7 +1,6 @@
 # encoding: UTF-8
 
-require 'pubnub'
-require 'gravatar_image_tag' 
+require 'pubnub' 
 include MessagesHelper
 include UsersHelper
 
