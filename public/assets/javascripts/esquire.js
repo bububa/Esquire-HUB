@@ -347,6 +347,11 @@ $(document).ready(function(){
             },
             error: function() { console.log("Connection Lost"); }
         });
+        messages = net.history({
+            channel: channel,
+            limit   => 10
+        });
+        console.log(messages);
     }
     
     function mark_read()
