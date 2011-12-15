@@ -329,8 +329,17 @@ $(document).ready(function(){
     function receive_message()
     {
         var channel = "user_message_count_" + $('a.profile_link').attr('tabindex');
+        var p = PUBNUB;
+        net = p.init({
+            publish_key   : 'pub-c-abced66b-f358-4899-bb63-23c8a422739d',
+            subscribe_key : 'sub-c-1a24d77d-25a4-11e1-b313-bd289def0c80',
+            origin        : 'pub-c-abced66b-f358-4899-bb63-23c8a422739d'
+        });
         PUBNUB.subscribe({
             channel: channel,
+            connect: function() {
+                console.log('CONNECTED TO:' + channel);
+            }
             callback: update_unread,
             error: function() { console.log("Connection Lost"); }
         });
@@ -534,5 +543,5 @@ $(document).ready(function(){
         e.preventDefault();
     });
     mark_read();
-    //receive_message();
+    receive_message();
 });

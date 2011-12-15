@@ -12,7 +12,6 @@ class Message < ActiveRecord::Base
   
   def self.count_unread(user_id)
     Rails.cache.fetch("User_Message_Count_#{user_id}") do 
-      logger.info ("read from database")
       Message.count(:conditions =>["to_user_id=? AND unread=?", user_id, true])
     end
   end
