@@ -328,7 +328,9 @@ $(document).ready(function(){
     
     function receive_message()
     {
-        var channel = "user_message_count_" + $('a.profile_link').attr('tabindex');
+        var profile_id = $('a.profile_link').attr('tabindex');
+        if (!profile_id) return;
+        var channel = "user_message_count_" + profile_id;
         var p = PUBNUB;
         net = p.init({
             publish_key   : 'pub-c-abced66b-f358-4899-bb63-23c8a422739d',
