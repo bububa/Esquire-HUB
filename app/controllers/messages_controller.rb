@@ -70,7 +70,7 @@ class MessagesController < ApplicationController
         secret_key,
         ssl_on
     )
-    
+    logger.info("change #{channel}")
     info = pubnub.publish({
         'channel' => channel,
         'message' => msg
