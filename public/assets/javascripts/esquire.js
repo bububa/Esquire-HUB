@@ -347,11 +347,13 @@ $(document).ready(function(){
             },
             error: function() { console.log("Connection Lost"); }
         });
-        messages = net.history({
+        net.history({
             channel: channel,
-            limit: 10
+            limit: 10,
+            callback: function(msg){
+                console.log(msg);
+            }
         });
-        console.log(messages);
     }
     
     function mark_read()
