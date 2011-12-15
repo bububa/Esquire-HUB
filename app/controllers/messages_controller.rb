@@ -50,9 +50,11 @@ class MessagesController < ApplicationController
   def self.new_message(vars)
     @message = Message.new(vars[:message]) 
     if @message.save
-      user = User.fetch(vars[:message][:from_user_id])
+      from_user = User.fetch(@message.from_user_id)
+      to_user = User.fetch(@message.to_user_id)
       count = Message.count_unread(@message.to_user_id)
-      MessagesController.publish("user_message_count_#{@message.to_user_id}", {"unread"=>count, 'msg'=>@message.msg, 'from'=>user.name }) if Rails.env.production?
+      MessagesController.publish("user_message_count_#{@message.to_user_id}", {"unread"=>count, 'msg'=>@message.msg, 'from'=>from_user.name }) if Rails.env.production?
+      MessageMailer.new_message_notification(to_user, from_user, @message.msg).deliver
       true
     else
       false

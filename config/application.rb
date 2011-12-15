@@ -47,5 +47,10 @@ module Esquire
     
     config.action_controller.perform_caching = true
     config.time_zone = "Beijing"
+    
+    # ActionMailer Setup
+    config.action_mailer.delivery_method = :smtp
+    #config.action_mailer.raise_delivery_errors = true
+    
   end
 end
