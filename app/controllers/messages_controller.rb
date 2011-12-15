@@ -43,7 +43,7 @@ class MessagesController < ApplicationController
   end
   
   def self.new_message(vars)
-    @message = Message.new(params[:message]) 
+    @message = Message.new(vars[:message]) 
     if @message.save
       flash[:success] = "消息发成功!"
       count = Message.count_unread(@message.to_user_id)
@@ -51,7 +51,7 @@ class MessagesController < ApplicationController
     else
       flash[:error] = "消息发送失败!"
     end
-    redirect_to_box(params[:box]) if params.has_key?(:box)
+    redirect_to_box(vars[:box]) if vars.has_key?(:box)
   end
   
   def destroy
