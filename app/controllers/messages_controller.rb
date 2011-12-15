@@ -39,19 +39,23 @@ class MessagesController < ApplicationController
   def create
     params[:message][:from_user_id] = current_user.id
     params[:message][:unread] = true
-    MessagesController::new_message(params)
+    if MessagesController::new_message(params)
+      flash[:success] = "消息发成功!"
+    else
+      flash[:error] = "消息发送失败!"
+    end
+    redirect_to_box(params[:box])
   end
   
-  def new_message(vars)
+  def self.new_message(vars)
     @message = Message.new(vars[:message]) 
     if @message.save
-      flash[:success] = "消息发成功!" unless @message.auto
       count = Message.count_unread(@message.to_user_id)
       MessagesController.publish("user_message_count_#{@message.to_user_id}", {"unread"=>count, 'msg'=>@message.msg, 'from'=>current_user.name, 'img'=>gravatar_for(current_user) }) if Rails.env.production?
+      true
     else
-      flash[:error] = "消息发送失败!" unless @message.auto
+      false
     end
-    redirect_to_box(vars[:box]) if vars.has_key?(:box)
   end
   
   def destroy
