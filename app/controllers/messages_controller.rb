@@ -16,6 +16,8 @@ class MessagesController < ApplicationController
     @users = Array[*User.fetch_all.select{ |x| (!admin_user?(x)||admin_user?)&&!current_user?(x) }.collect {|v,i| [v.name, v.id] }]
     if params[:box] == "out"
       @conditions = ["from_user_id=?", current_user.id]
+    elsif params[:box] == "all" && admin_user?
+      @conditions = []
     else
       @conditions = ["to_user_id=?", current_user.id]
     end
@@ -82,7 +84,7 @@ class MessagesController < ApplicationController
       if params.has_key?(:read)
         redirect_to(root_path) unless current_user?(User.fetch(@message.to_user_id))
       else
-        redirect_to(root_path) unless ( current_user?(User.fetch(@message.from_user_id)) || authorized?([Authority::Admin]) || !@message.unread )
+        redirect_to(root_path) unless ( current_user?(User.fetch(@message.from_user_id)) && @message.unread || authorized?([Authority::Admin]) )
       end
     end
 end

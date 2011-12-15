@@ -298,7 +298,7 @@ $(document).ready(function(){
         });
     }
     
-    function update_unread(data)
+    function message_alert(data)
     {
         console.log(JSON.stringify(data));
         if (data.unread > 0)
@@ -307,7 +307,7 @@ $(document).ready(function(){
         }else{
             $('.unread_count').html('消息');
         }
-        setTimeout(unread_count, 1000*60);
+        //setTimeout(unread_count, 1000*60);
     }
     
     function unread_count()
@@ -318,7 +318,7 @@ $(document).ready(function(){
             url: '/unread_count', 
             dataType: "json",
             success: function(data) {
-                update_unread(data);
+                message_alert(data);
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.log(textStatus);
@@ -343,15 +343,19 @@ $(document).ready(function(){
             },
             callback: function(msg) {
                 console.log("Got pushed message");
-                update_unread(msg);
+                message_alert(msg);
             },
             error: function() { console.log("Connection Lost"); }
         });
         net.history({
             channel: channel,
-            limit: 10,
-            callback: function(msg){
-                console.log(msg);
+            limit: 1,
+            callback: function(messages){
+                console.log(messages);
+                if (messages.length == 0) return;
+                //msg = messages[0];
+                //message_alert(msg);
+                unread_count();
             }
         });
     }

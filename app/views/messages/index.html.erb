@@ -5,6 +5,9 @@
     <% else %>
         <%= link_to "发件箱", outbox_path, :class=>"btn secondary"%>
     <% end %>
+    <% if admin_user? %>
+    <%= link_to "全部", messages_all_path, :class=>"btn secondary"%>
+    <% end %>
 </div>
 <% unless params[:box] == "out" %>
 <div class="well">
@@ -30,12 +33,16 @@
                     系统消息
                 <% elsif params[:box] == "out" %>
                     <%= gravatar_for User.fetch(message.to_user_id), :size => 40 %><br/><%=User.fetch(message.to_user_id).name%>
+                <% elsif params[:box] == "all" %>
+                    <div class="row">
+                        <div class="span3"><%= gravatar_for User.fetch(message.from_user_id), :size => 40 %><br/><%=User.fetch(message.from_user_id).name%></div>
+                        <div class="span3"><%= gravatar_for User.fetch(message.to_user_id), :size => 40 %><br/><%=User.fetch(message.to_user_id).name%></div>
                 <% else %>
                     <%= gravatar_for User.fetch(message.from_user_id), :size => 40 %><br/><%=User.fetch(message.from_user_id).name%>
                 <% end %>
             </div>
             <div class="span12 alert-message block-message <%= message.unread ? 'success' : 'info'%>">
-                <% if params[:box] == "out" && message.unread %>
+                <% if params[:box] == "out" && message.unread || admin_user? %>
                 <%=link_to "x", message_delete_path(message), :class=>"close"%>
                 <% end %>
                 <p><%=simple_format(message.msg)%></p>
