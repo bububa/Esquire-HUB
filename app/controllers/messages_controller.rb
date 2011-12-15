@@ -39,7 +39,7 @@ class MessagesController < ApplicationController
   def create
     params[:message][:from_user_id] = current_user.id
     params[:message][:unread] = true
-    MessagesController.new_message(params)
+    MessagesController::new_message(params)
   end
   
   def self.new_message(vars)
