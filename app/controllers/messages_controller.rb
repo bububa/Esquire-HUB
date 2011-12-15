@@ -2,6 +2,8 @@
 
 require 'pubnub'
 include MessagesHelper
+include UsersHelper
+
 class MessagesController < ApplicationController
   before_filter :authenticate, :only => [:index, :create, :destroy, :read]
   before_filter :correct_user, :only=>[:destroy, :read]
@@ -41,7 +43,7 @@ class MessagesController < ApplicationController
     if @message.save
       flash[:success] = "消息发成功!"
       count = Message.count_unread(@message.to_user_id)
-      MessagesController.publish("user_message_count_#{@message.to_user_id}", {"unread"=>count, 'msg'=>@message.msg, 'from'=>current_user.name }) if Rails.env.production?
+      MessagesController.publish("user_message_count_#{@message.to_user_id}", {"unread"=>count, 'msg'=>@message.msg, 'from'=>current_user.name, 'img'=>gravatar_for(current_user) }) if Rails.env.production?
     else
       flash[:error] = "消息发送失败!"
     end

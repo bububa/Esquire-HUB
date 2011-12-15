@@ -312,15 +312,20 @@ $(document).ready(function(){
         }
         if (data.msg)
         {
+            var img = null;
+            if (data.img)
+            {
+                img = $(data.img).src
+            }
             $.gritter.add({
             	// (string | mandatory) the heading of the notification
             	title: '来自 ' + data.from,
             	// (string | mandatory) the text inside the notification
             	text: data.msg,
             	// (string | optional) the image to display on the left
-            	//image: 'http://a0.twimg.com/profile_images/59268975/jquery_avatar_bigger.png',
+            	image: img,
             	// (bool | optional) if you want it to fade out on its own or just sit there
-            	//sticky: false, 
+            	sticky: true, 
             });
         }
         //setTimeout(unread_count, 1000*60);
