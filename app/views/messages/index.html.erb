@@ -1,15 +1,12 @@
 <div class="page-header">
     <h1>消息中心</h1>
-    <% if params[:box] == "out" %>
-        <%= link_to "收件箱", messages_path, :class=>"btn secondary"%>
-    <% else %>
-        <%= link_to "发件箱", outbox_path, :class=>"btn secondary"%>
-    <% end %>
+    <%= link_to "对话", messages_path, :class=>"btn secondary"%>
+    <%= link_to "收件箱", inbox_path, :class=>"btn secondary"%>
+    <%= link_to "发件箱", outbox_path, :class=>"btn secondary"%>
     <% if admin_user? %>
     <%= link_to "全部", messages_all_path, :class=>"btn secondary"%>
     <% end %>
 </div>
-<% unless params[:box] == "out" %>
 <div class="well">
 <%= form_for(@message) do |f| %>
 <fieldset>
@@ -18,32 +15,33 @@
     </div>
     <div class="clearfix">
         <%= f.select :to_user_id, @users, {}, {:class=>"medium"} %>
+        <input type="hidden" name="box" value="<%=params[:box] if params.has_key?(:box)%>">
         <%= f.submit "发送", :class=>"btn primary" %>
     </div>
 </fieldset>
-<% end %>
 </div>
 <% end %>
 <ul class="unstyled">
     <% @messages.each do |message| %>
-    <li class="msg <%='unread' if message.unread&&params[:box]!='out' %>" tabindex="<%=message.id%>">
+    <li class="msg <%='unread' if message.unread&&message.to_user_id==current_user.id %>" tabindex="<%=message.id%>">
         <div class="row">
             <div class="span2">
                 <% if message.auto %>
                     系统消息
                 <% elsif params[:box] == "out" %>
                     <%= gravatar_for User.fetch(message.to_user_id), :size => 40 %><br/><%=User.fetch(message.to_user_id).name%>
-                <% elsif params[:box] == "all" %>
-                    <div class="row">
-                        <div class="span3"><%= gravatar_for User.fetch(message.from_user_id), :size => 40 %><br/><%=User.fetch(message.from_user_id).name%></div>
-                        <div class="span3"><%= gravatar_for User.fetch(message.to_user_id), :size => 40 %><br/><%=User.fetch(message.to_user_id).name%></div>
-                <% else %>
+                <% elsif params[:box] == "in" %>
                     <%= gravatar_for User.fetch(message.from_user_id), :size => 40 %><br/><%=User.fetch(message.from_user_id).name%>
+                <% else %>
+                    <div class="row">
+                        <div class="span1"><%= gravatar_for User.fetch(message.from_user_id), :size => 40 %><br/><%=User.fetch(message.from_user_id).name%></div>
+                        <div class="span1"><%= gravatar_for User.fetch(message.to_user_id), :size => 40 %><br/><%=User.fetch(message.to_user_id).name%></div>
+                    </div>
                 <% end %>
             </div>
-            <div class="span12 alert-message block-message <%= message.unread ? 'success' : 'info'%>">
-                <% if params[:box] == "out" && message.unread || admin_user? %>
-                <%=link_to "x", message_delete_path(message), :class=>"close"%>
+            <div class="span12 alert-message block-message <%= message.unread ? 'warning' : (current_user.id == (message.from_user_id) ? 'success' : 'info')%>">
+                <% if message.from_user_id==current_user.id && message.unread || admin_user? %>
+                <%=link_to "x", message_delete_path(message, params[:box]), :class=>"close"%>
                 <% end %>
                 <p><%=simple_format(message.msg)%></p>
                 <p class="pull-right"><%=message.created_at.strftime("%Y年%m月%d日 %X")%></p>

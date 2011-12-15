@@ -301,11 +301,27 @@ $(document).ready(function(){
     function message_alert(data)
     {
         console.log(JSON.stringify(data));
-        if (data.unread > 0)
+        if (data.unread)
         {
-            $('.unread_count').html('消息<span class="label important">' + data.unread + '</span>');
-        }else{
-            $('.unread_count').html('消息');
+            if (data.unread > 0)
+            {
+                $('.unread_count').html('消息<span class="label important">' + data.unread + '</span>');
+            }else{
+                $('.unread_count').html('消息');
+            }
+        }
+        if (data.msg)
+        {
+            $.gritter.add({
+            	// (string | mandatory) the heading of the notification
+            	title: '来自 ' + data.from,
+            	// (string | mandatory) the text inside the notification
+            	text: data.msg,
+            	// (string | optional) the image to display on the left
+            	//image: 'http://a0.twimg.com/profile_images/59268975/jquery_avatar_bigger.png',
+            	// (bool | optional) if you want it to fade out on its own or just sit there
+            	sticky: false, 
+            });
         }
         //setTimeout(unread_count, 1000*60);
     }
@@ -556,6 +572,12 @@ $(document).ready(function(){
         $('#intro-image-modal .body p').html("<img src='"+$(this).attr('href')+"' width=550/>");
         $('#intro-image-modal').modal('show');
         e.preventDefault();
+    });
+    $.extend($.gritter.options, { 
+        position: 'bottom-left', // defaults to 'top-right' but can be 'bottom-left', 'bottom-right', 'top-left', 'top-right' (added in 1.7.1)
+    	fade_in_speed: 'medium', // how fast notifications fade in (string or int)
+    	fade_out_speed: 2000, // how fast the notices fade out
+    	time: 6000 // hang on the screen for...
     });
     mark_read();
     receive_message();

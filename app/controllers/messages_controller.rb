@@ -1,7 +1,7 @@
 # encoding: UTF-8
 
 require 'pubnub'
-
+include MessagesHelper
 class MessagesController < ApplicationController
   before_filter :authenticate, :only => [:index, :create, :destroy, :read]
   before_filter :correct_user, :only=>[:destroy, :read]
@@ -16,10 +16,12 @@ class MessagesController < ApplicationController
     @users = Array[*User.fetch_all.select{ |x| (!admin_user?(x)||admin_user?)&&!current_user?(x) }.collect {|v,i| [v.name, v.id] }]
     if params[:box] == "out"
       @conditions = ["from_user_id=?", current_user.id]
+    elsif params[:box] == "in"
+      @conditions = ["to_user_id=?", current_user.id]
     elsif params[:box] == "all" && admin_user?
       @conditions = []
     else
-      @conditions = ["to_user_id=?", current_user.id]
+      @conditions = ["to_user_id=? OR from_user_id=?", current_user.id, current_user.id]
     end
     @messages = Message.paginate(:page => params[:page], :per_page => @per_page, :conditions => @conditions)
     @title = "消息中心"
@@ -39,17 +41,17 @@ class MessagesController < ApplicationController
     if @message.save
       flash[:success] = "消息发成功!"
       count = Message.count_unread(@message.to_user_id)
-      MessagesController.publish("user_message_count_#{@message.to_user_id}", {"unread"=>count}) if Rails.env.production?
+      MessagesController.publish("user_message_count_#{@message.to_user_id}", {"unread"=>count, 'msg'=>@message.msg, 'from'=>current_user.name }) if Rails.env.production?
     else
       flash[:error] = "消息发送失败!"
     end
-    redirect_to messages_path
+    redirect_to_box(params[:box])
   end
   
   def destroy
     @message.destroy
     flash[:warning] = "已经删除!"
-    redirect_to messages_path
+    redirect_to_box(params[:box])
   end
   
   def read
@@ -85,6 +87,18 @@ class MessagesController < ApplicationController
         redirect_to(root_path) unless current_user?(User.fetch(@message.to_user_id))
       else
         redirect_to(root_path) unless ( current_user?(User.fetch(@message.from_user_id)) && @message.unread || authorized?([Authority::Admin]) )
+      end
+    end
+    
+    def redirect_to_box(box)
+      if box == 'out'
+        redirect_to outbox_path
+      elsif box == 'all'
+        redirect_to messages_all_path
+      elsif box == 'in'
+        redirect_to inbox_path
+      else
+        redirect_to messages_path
       end
     end
 end

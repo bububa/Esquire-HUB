@@ -28,7 +28,7 @@ Esquire::Application.routes.draw do
   match '/contact/edit/:id', :to=>'contacts#edit'
   match '/contact/show', :to=>'contacts#show'
   match '/messages/:box', :to=>'messages#index'
-  match '/message/delete/:id', :to=>'messages#destroy'
+  match '/message/delete/:id/:box', :to=>'messages#destroy'
   match '/unread_count', :to=>'messages#unread_count'
   match '/mark_read', :to=>'messages#mark_read'
 
