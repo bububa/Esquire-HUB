@@ -37,7 +37,7 @@ class MessagesController < ApplicationController
     if @message.save
       flash[:success] = "消息发成功!"
       count = Message.count_unread(@message.to_user_id)
-      MessagesController.publish("user_message_count_#{@message.to_user_id}", {"unread"=>count.to_s})
+      MessagesController.publish("user_message_count_#{@message.to_user_id}", {"unread"=>count})
     else
       flash[:error] = "消息发送失败!"
     end
@@ -59,7 +59,6 @@ class MessagesController < ApplicationController
   end
   
   def self.publish(channel, msg)
-    puts ("publish")
     publish_key   = ENV['PUBNUB_PUBLISH_KEY'] || 'demo'
     subscribe_key = ENV['PUBNUB_SUBSCRIBE_KEY'] || 'demo'
     secret_key    = ENV['PUBNUB_SECRET_KEY'] || ''
@@ -71,8 +70,6 @@ class MessagesController < ApplicationController
         secret_key,
         ssl_on
     )
-    puts("change #{channel}")
-    puts("publish #{publish_key}, secret #{secret_key}")
     info = pubnub.publish({
         'channel' => channel,
         'message' => msg
