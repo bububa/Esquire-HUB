@@ -349,7 +349,7 @@ $(document).ready(function(){
         });
         messages = net.history({
             channel: channel,
-            limit   => 10
+            limit: 10
         });
         console.log(messages);
     }
