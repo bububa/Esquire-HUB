@@ -8,4 +8,8 @@ module UsersHelper
     "#{root_url}user/edit/#{user.id}"
   end
   
+  def user_delete_path(user)
+    "#{root_url}user/delete/#{user.id}"
+  end
+  
 end

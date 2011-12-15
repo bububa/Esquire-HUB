@@ -18,6 +18,6 @@ end %>
 </select>
 </td>
 <td>
-<%= link_to "delete", user, :method => :delete, :confirm => "You sure?",
+<%= link_to "delete", user_delete_path(user), :method => :delete, :confirm => "You sure?",
 :title => "Delete #{user.name}", :class=>"btn small danger"%>
 </td>
