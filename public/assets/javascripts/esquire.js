@@ -332,7 +332,7 @@ $(document).ready(function(){
         if (!profile_id) return;
         var channel = "user_message_count_" + profile_id;
         var p = PUBNUB;
-        net = p.init({
+        var net = p.init({
             publish_key   : 'pub-c-abced66b-f358-4899-bb63-23c8a422739d',
             subscribe_key : 'sub-c-1a24d77d-25a4-11e1-b313-bd289def0c80',
             origin        : 'pub-c-abced66b-f358-4899-bb63-23c8a422739d'
@@ -342,7 +342,10 @@ $(document).ready(function(){
             connect: function() {
                 console.log('CONNECTED TO:' + channel);
             },
-            callback: update_unread,
+            callback: function(msg) {
+                console.log("Got pushed message");
+                update_unread(msg);
+            },
             error: function() { console.log("Connection Lost"); }
         });
     }
