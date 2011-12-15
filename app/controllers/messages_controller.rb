@@ -59,6 +59,7 @@ class MessagesController < ApplicationController
   end
   
   def self.publish(channel, msg)
+    puts ("publish")
     publish_key   = ENV['PUBNUB_PUBLISH_KEY'] || 'demo'
     subscribe_key = ENV['PUBNUB_SUBSCRIBE_KEY'] || 'demo'
     secret_key    = ENV['PUBNUB_SECRET_KEY'] || ''
@@ -70,8 +71,8 @@ class MessagesController < ApplicationController
         secret_key,
         ssl_on
     )
-    logger.info("change #{channel}")
-    logger.info("publish #{publish_key}, secret #{secret_key}")
+    puts("change #{channel}")
+    puts("publish #{publish_key}, secret #{secret_key}")
     info = pubnub.publish({
         'channel' => channel,
         'message' => msg
