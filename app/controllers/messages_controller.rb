@@ -37,7 +37,7 @@ class MessagesController < ApplicationController
     if @message.save
       flash[:success] = "消息发成功!"
       count = Message.count_unread(@message.to_user_id)
-      MessagesController.publish("user_message_count_#{@message.to_user_id}", {"unread"=>count})
+      MessagesController.publish("user_message_count_#{@message.to_user_id}", {"unread"=>count}) if Rails.env.production?
     else
       flash[:error] = "消息发送失败!"
     end
