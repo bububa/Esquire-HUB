@@ -335,7 +335,6 @@ $(document).ready(function(){
         var net = p.init({
             publish_key   : 'pub-c-abced66b-f358-4899-bb63-23c8a422739d',
             subscribe_key : 'sub-c-1a24d77d-25a4-11e1-b313-bd289def0c80',
-            origin        : 'esquire.heroku.com'
         });
         net.subscribe({
             channel: channel,
