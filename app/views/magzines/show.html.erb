@@ -1,99 +1,101 @@
-<div class="page-header">
-    <h1><%=@title%></h1>
-</div>
-<% if @total > 0 %>
-<section>
-    <h2>统计</h2>
-    <table class="bordered-table zebra-striped">
-        <thead><tr><th>完成度</th><th>迟交资料</th><th>迟交初稿</th><th>迟交定稿</th></tr></thead>
-        <tbody>
-            <tr>
-                <td><%=number_to_percentage(100.0*@finished/@total, :precision => 0)%> (<%=@finished%>/<%=@total%>)</td>
-                <td><%=number_to_percentage(100.0*@delay_material/@total, :precision=>0)%> (<%=@delay_material%>)</td>
-                <td><%=number_to_percentage(100.0*@delay_draft/@total, :precision=>0)%> (<%=@delay_draft%>)</td>
-                <td><%=number_to_percentage(100.0*@delay_final/@total, :precision=>0)%> (<%=@delay_final%>)</td>
-            </tr>
-        <tbody>
-    </table>
-</section>
-<hr/>
-<% end %>
-<% if @expenses.count > 0 %>
-<section>
-    <h2>报销单</h2>
-    <% @expenses.each do |editor, exp_types|%>
-    <div>
-        <h3><%=editor%></h3>
-        <ul class="dotted unstyled alert-message block-message info">
-            <% exp_types.each do |exp_type, expenses|%>
-            <li>
-                <h4><%=Constants::ExpenseTypes[exp_type]%></h4>
-                <table class="bordered-table zebra-striped" style="background:white">
-                    <thead>
-                        <tr>
-                            <% if exp_type == 0 %>
-                            <th>职业</th>
-                            <% end %>
-                            <th><%= exp_type == 0 ? "作者" : "联系人" %></th>
-                            <% if exp_type == 0 %>
-                            <th>真实姓名</th>
-                            <% end %>
-                            <th>电邮</th>
-                            <th>身份证</th>
-                            <% if exp_type == 0 %>
-                            <th>篇目</th>
-                            <th>字数</th>
-                            <th>稿酬(元/千字)</th>
-                            <th>页数</th>
-                            <th>稿酬(元/张)</th>
-                            <% end %>
-                            <th>应付金额</th>
-                            <th>税额</th>
-                            <th>实领金额</th>
-                            <th>银行账号</th>
-                            <th>开户行</th>
-                        </tr>
-                    </thead>
-                    <% expenses.each do |key, exps| %>
-                    <tbody>
-                        <% total_fee = 0; tax = 0; paid = 0 %>
-                        <% exps.each do |expense| %>
-                        <% total_fee +=expense.total_fee unless expense.total_fee.nil?;  paid += expense.paid unless expense.paid.nil? %>
-                        <tr>
-                            <% if exps.index(expense) == 0 %>
-                                <% if exp_type == 0 %>
-                                <td <%="rowspan=#{exps.count}" unless exps.count==1%> ><%=Constants::Careers[expense.career]%></td>
-                                <% end %>
-                                <td <%="rowspan=#{exps.count}" unless exps.count==1%> ><%=link_to expense.author, "#", :rel=>("popover" unless expense.comment.nil?), "data-content"=>(expense.comment unless expense.comment.nil?) , "data-original-title"=>("备注" unless expense.comment.nil?)%></td>
-                                <% if exp_type == 0 %>
-                                <td <%="rowspan=#{exps.count}" unless exps.count==1%> ><%=expense.realname%></td>
-                                <% end %>
-                                <td <%="rowspan=#{exps.count}" unless exps.count==1%> ><%=expense.email%></td>
-                                <td <%="rowspan=#{exps.count}" unless exps.count==1%> ><%=expense.idcard%></td>
-                            <% end %>
-                            <% if exp_type == 0 %>
-                            <td><%=link_to expense.article.subject, expense.article, :class=>"#{'label warning' if expense.article.editor_id.nil?}#{'label important' if expense.article.canceled}#{'label success' unless expense.article.print_at.nil?}#{'label notice' if expense.article.closed}", :rel=>("popover" unless expense.article.comment.nil?), "data-content"=>(simple_format(expense.article.comment) unless expense.article.comment.nil?) , "data-original-title"=>expense.article.subject %></td>
-                            <td><%=expense.text_count%></td>    
-                            <td><%=expense.fee_per_word%></td>
-                            <td><%=expense.pages%></td>
-                            <td><%=expense.fee_per_page%></td>
-                            <% end %>
-                            <% if exps.index(expense) == 0 %>
-                                <td <%="rowspan=#{exps.count}" unless exps.count==1%> ><%=total_fee%></td>
-                                <td <%="rowspan=#{exps.count}" unless exps.count==1%> ><%=tax%></td>
-                                <td <%="rowspan=#{exps.count}" unless exps.count==1%> ><%=paid%></td>
-                                <td <%="rowspan=#{exps.count}" unless exps.count==1%> ><%=expense.bankno%></td>
-                                <td <%="rowspan=#{exps.count}" unless exps.count==1%> ><%=expense.bank%></td>
-                            <% end %>
-                        </tr>
-                        <% end %>
-                    </tbody>
-                    <% end %>
-                </table>
-            </li>
-            <% end %>
-        </ul>
+<section class="printable">
+    <div class="page-header">
+        <h1><%=@title%><a herf="javascript:void(0)" class="btn primary pull-right printbtn">打印</a></h1>
     </div>
+    <% if @total > 0 %>
+    <section>
+        <h2>统计</h2>
+        <table class="bordered-table zebra-striped">
+            <thead><tr><th>完成度</th><th>迟交资料</th><th>迟交初稿</th><th>迟交定稿</th></tr></thead>
+            <tbody>
+                <tr>
+                    <td><%=number_to_percentage(100.0*@finished/@total, :precision => 0)%> (<%=@finished%>/<%=@total%>)</td>
+                    <td><%=number_to_percentage(100.0*@delay_material/@total, :precision=>0)%> (<%=@delay_material%>)</td>
+                    <td><%=number_to_percentage(100.0*@delay_draft/@total, :precision=>0)%> (<%=@delay_draft%>)</td>
+                    <td><%=number_to_percentage(100.0*@delay_final/@total, :precision=>0)%> (<%=@delay_final%>)</td>
+                </tr>
+            <tbody>
+        </table>
+    </section>
+    <hr/>
+    <% end %>
+    <% if @expenses.count > 0 %>
+    <section>
+        <h2>报销单</h2>
+        <% @expenses.each do |editor, exp_types|%>
+        <div>
+            <h3><%=editor%></h3>
+            <ul class="dotted unstyled alert-message block-message info">
+                <% exp_types.each do |exp_type, expenses|%>
+                <li>
+                    <h4><%=Constants::ExpenseTypes[exp_type]%></h4>
+                    <table class="bordered-table zebra-striped" style="background:white">
+                        <thead>
+                            <tr>
+                                <% if exp_type == 0 %>
+                                <th>职业</th>
+                                <% end %>
+                                <th><%= exp_type == 0 ? "作者" : "联系人" %></th>
+                                <% if exp_type == 0 %>
+                                <th>真实姓名</th>
+                                <% end %>
+                                <th>电邮</th>
+                                <th>身份证</th>
+                                <% if exp_type == 0 %>
+                                <th>篇目</th>
+                                <th>字数</th>
+                                <th>稿酬(元/千字)</th>
+                                <th>页数</th>
+                                <th>稿酬(元/张)</th>
+                                <% end %>
+                                <th>应付金额</th>
+                                <th>税额</th>
+                                <th>实领金额</th>
+                                <th>银行账号</th>
+                                <th>开户行</th>
+                            </tr>
+                        </thead>
+                        <% expenses.each do |key, exps| %>
+                        <tbody>
+                            <% total_fee = 0; tax = 0; paid = 0 %>
+                            <% exps.each do |expense| %>
+                            <% total_fee +=expense.total_fee unless expense.total_fee.nil?;  paid += expense.paid unless expense.paid.nil? %>
+                            <tr>
+                                <% if exps.index(expense) == 0 %>
+                                    <% if exp_type == 0 %>
+                                    <td <%="rowspan=#{exps.count}" unless exps.count==1%> ><%=Constants::Careers[expense.career]%></td>
+                                    <% end %>
+                                    <td <%="rowspan=#{exps.count}" unless exps.count==1%> ><%=link_to expense.author, "#", :rel=>("popover" unless expense.comment.nil?), "data-content"=>(expense.comment unless expense.comment.nil?) , "data-original-title"=>("备注" unless expense.comment.nil?)%></td>
+                                    <% if exp_type == 0 %>
+                                    <td <%="rowspan=#{exps.count}" unless exps.count==1%> ><%=expense.realname%></td>
+                                    <% end %>
+                                    <td <%="rowspan=#{exps.count}" unless exps.count==1%> ><%=expense.email%></td>
+                                    <td <%="rowspan=#{exps.count}" unless exps.count==1%> ><%=expense.idcard%></td>
+                                <% end %>
+                                <% if exp_type == 0 %>
+                                <td><%=link_to expense.article.subject, expense.article, :class=>"#{'label warning' if expense.article.editor_id.nil?}#{'label important' if expense.article.canceled}#{'label success' unless expense.article.print_at.nil?}#{'label notice' if expense.article.closed}", :rel=>("popover" unless expense.article.comment.nil?), "data-content"=>(simple_format(expense.article.comment) unless expense.article.comment.nil?) , "data-original-title"=>expense.article.subject %></td>
+                                <td><%=expense.text_count%></td>    
+                                <td><%=expense.fee_per_word%></td>
+                                <td><%=expense.pages%></td>
+                                <td><%=expense.fee_per_page%></td>
+                                <% end %>
+                                <% if exps.index(expense) == 0 %>
+                                    <td <%="rowspan=#{exps.count}" unless exps.count==1%> ><%=total_fee%></td>
+                                    <td <%="rowspan=#{exps.count}" unless exps.count==1%> ><%=tax%></td>
+                                    <td <%="rowspan=#{exps.count}" unless exps.count==1%> ><%=paid%></td>
+                                    <td <%="rowspan=#{exps.count}" unless exps.count==1%> ><%=expense.bankno%></td>
+                                    <td <%="rowspan=#{exps.count}" unless exps.count==1%> ><%=expense.bank%></td>
+                                <% end %>
+                            </tr>
+                            <% end %>
+                        </tbody>
+                        <% end %>
+                    </table>
+                </li>
+                <% end %>
+            </ul>
+        </div>
+        <% end %>
+    </section>
     <% end %>
 </section>
-<% end %>
