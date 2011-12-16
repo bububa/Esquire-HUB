@@ -516,4 +516,8 @@ $(document).ready(function(){
     });
     mark_read();
     receive_message();
+    $('a.printbtn').click(function(){
+       $('.printable').jqprint();
+       return false; 
+    });
 });

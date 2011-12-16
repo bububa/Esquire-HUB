@@ -1,12 +1,15 @@
 <div class="page-header">
-    <h1><%=link_to @article.subject, @article%> 报销类目</h1>
+    <h1>
+        <%=link_to @article.subject, @article%> 报销类目
+        <a herf="javascript:void(0)" class="btn primary pull-right printbtn">打印</a>
+    </h1>
 </div>
 <ul class="tabs" data-tab="tabs">
     <% Constants::ExpenseTypes.collect do |v, i|%>
         <li class="<%='active' if Constants::ExpenseTypes.index(v)==0 %>"><a href="#<%=Constants::ExpenseTypes.index(v)%>"><%=v%></a></li>
     <% end %>
 </ul>
-<div class="tab-content">
+<div class="tab-content printable">
     
 <% Constants::ExpenseTypes.collect do |v, i|%>
     <div class="tab-pane <%='active' if Constants::ExpenseTypes.index(v)==0 %>" id="<%=Constants::ExpenseTypes.index(v)%>">
