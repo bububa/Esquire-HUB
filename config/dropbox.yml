@@ -1,0 +1,14 @@
+defaults: &defaults
+  app_key: 'nybgxo3sxx5349c'
+  app_secret: '4f1046r4m8a2xlu'
+  backup_path: '/Public/Backups/' 
+  heroku_app_name: 'esquire'
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
+
+production:
+  <<: *defaults

@@ -1,0 +1,12 @@
+embed_assets: on
+
+javascripts:
+  workspace:
+    - public/javascripts/common/*.js
+    - public/javascripts/plugin/*.js
+    - public/javascripts/bootstrap/*.js
+    - public/javascripts/esquire/*.js
+
+stylesheets:
+  workspace:
+    - public/stylesheets/*.css

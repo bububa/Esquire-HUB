@@ -2,7 +2,7 @@
     <div id="loading" class="shadow" ><div class="spinner"></div>Loading...</div>
     <div class="topbar-inner">
         <div class="container-fluid">
-            <a href="<%=root_path%>" class="brand"><img src="/assets/images/esquire-logo.png" alt="esquire-logo" class="logo"> HUB<small class="label important">beta</small></a>
+            <a href="<%=root_path%>" class="brand"><img src="/images/esquire-logo.png" alt="esquire-logo" class="logo"> HUB<small class="label important">beta</small></a>
             <ul class="nav">
                 <li class="<%= is_active?('pages', 'home')%>"><%= link_to "首页", root_path %></li>
                 <% if signed_in? %>

@@ -1,0 +1,2 @@
+require 'jammit'
+Jammit.package!
