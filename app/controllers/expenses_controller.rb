@@ -28,7 +28,9 @@ class ExpensesController < ApplicationController
         flash[:success] = "新建联系人"
       else
         @contact = Contact.find_by_name_and_career_and_user_id(contact_info[:name], contact_info[:career], contact_info[:user_id])
-        contact_info.delete(:name, :career, :user_id)
+        contact_info.delete(:name)
+        contact_info.delete(:career)
+        contact_info.delete(:user_id)
         @contact.update_attributes(contact_info)
       end
       flash[:success] = "添加报销项目成功!"
