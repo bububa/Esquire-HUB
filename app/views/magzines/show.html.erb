@@ -1,6 +1,9 @@
 <section class="printable">
     <div class="page-header">
-        <h1><%=@title%><a herf="javascript:void(0)" class="btn primary pull-right printbtn">打印</a></h1>
+        <h1><%=@title%>
+            <%=link_to "打印", "javascript:void(0)", :class=>"btn primary pull-right printbtn" %>
+            <%=link_to "Export as Excel", export_excel_path(params[:no]), :class=>"btn secondary pull-right" %>
+        </h1>
     </div>
     <% if @total > 0 %>
     <section>
@@ -41,8 +44,8 @@
                                 <% end %>
                                 <th>电邮</th>
                                 <th>身份证</th>
-                                <% if exp_type == 0 %>
                                 <th>篇目</th>
+                                <% if exp_type == 0 %>
                                 <th>字数</th>
                                 <th>稿酬(元/千字)</th>
                                 <th>页数</th>
@@ -59,7 +62,7 @@
                         <tbody>
                             <% total_fee = 0; tax = 0; paid = 0 %>
                             <% exps.each do |expense| %>
-                            <% total_fee +=expense.total_fee unless expense.total_fee.nil?;  paid += expense.paid unless expense.paid.nil? %>
+                            <% total_fee +=expense.total_fee unless expense.total_fee.nil?;  paid += expense.paid unless expense.paid.nil?; tax += expense.tax unless expense.tax.nil? %>
                             <tr>
                                 <% if exps.index(expense) == 0 %>
                                     <% if exp_type == 0 %>
@@ -72,8 +75,8 @@
                                     <td <%="rowspan=#{exps.count}" unless exps.count==1%> ><%=expense.email%></td>
                                     <td <%="rowspan=#{exps.count}" unless exps.count==1%> ><%=expense.idcard%></td>
                                 <% end %>
-                                <% if exp_type == 0 %>
                                 <td><%=link_to expense.article.subject, expense.article, :class=>"#{'label warning' if expense.article.editor_id.nil?}#{'label important' if expense.article.canceled}#{'label success' unless expense.article.print_at.nil?}#{'label notice' if expense.article.closed}", :rel=>("popover" unless expense.article.comment.nil?), "data-content"=>(simple_format(expense.article.comment) unless expense.article.comment.nil?) , "data-original-title"=>expense.article.subject %></td>
+                                <% if exp_type == 0 %>
                                 <td><%=expense.text_count%></td>    
                                 <td><%=expense.fee_per_word%></td>
                                 <td><%=expense.pages%></td>

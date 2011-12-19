@@ -21,6 +21,7 @@ gem 'thin'
 gem 'gravatar_image_tag', '0.1.0'
 gem 'will_paginate'
 gem 'rack-contrib'
+gem "spreadsheet"
 
 # Heroku Add-Ons
 gem 'newrelic_rpm'

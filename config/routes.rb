@@ -23,6 +23,7 @@ Esquire::Application.routes.draw do
   match '/expenses/:article_id', :to=>'expenses#index'
   match '/expense/edit/:id', :to=>'expenses#edit'
   match '/expense/delete/:id', :to=>'expenses#destroy'
+  match '/expenses/excel/:no', :to=>'magzines#export_excel'
   match '/magzine/:no', :to=>'magzines#show'
   match '/contact/delete/:id', :to=>'contacts#destroy'
   match '/contact/edit/:id', :to=>'contacts#edit'
