@@ -2,7 +2,7 @@
     <div class="page-header">
         <h1><%=@title%>
             <%=link_to "打印", "javascript:void(0)", :class=>"btn primary pull-right printbtn" %>
-            <%=link_to "Export as Excel", export_excel_path(params[:no]), :class=>"btn secondary pull-right" %>
+            <%=link_to "下载Excel", export_excel_path(params[:no]), :class=>"btn secondary pull-right" %>
         </h1>
     </div>
     <% if @total > 0 %>
