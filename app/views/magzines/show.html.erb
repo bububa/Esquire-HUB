@@ -12,10 +12,10 @@
             <thead><tr><th>完成度</th><th>迟交资料</th><th>迟交初稿</th><th>迟交定稿</th></tr></thead>
             <tbody>
                 <tr>
-                    <td><%=number_to_percentage(100.0*@finished/@total, :precision => 0)%> (<%=@finished%>/<%=@total%>)</td>
-                    <td><%=number_to_percentage(100.0*@delay_material/@total, :precision=>0)%> (<%=@delay_material%>)</td>
-                    <td><%=number_to_percentage(100.0*@delay_draft/@total, :precision=>0)%> (<%=@delay_draft%>)</td>
-                    <td><%=number_to_percentage(100.0*@delay_final/@total, :precision=>0)%> (<%=@delay_final%>)</td>
+                    <td><span class="pie"><%=@finished%>/<%=@total%></span><%=number_to_percentage(100.0*@finished/@total, :precision => 0)%> (<%=@finished%>/<%=@total%>)</td>
+                    <td><span class="pie"><%=@delay_material/@total%></span><%=number_to_percentage(100.0*@delay_material/@total, :precision=>0)%> (<%=@delay_material%>)</td>
+                    <td><span class="pie"><%=@delay_draft/@total%>/<%=@total%></span><%=number_to_percentage(100.0*@delay_draft/@total, :precision=>0)%> (<%=@delay_draft%>)</td>
+                    <td><span class="pie"><%=@delay_final/@total%></span><%=number_to_percentage(100.0*@delay_final/@total, :precision=>0)%> (<%=@delay_final%>)</td>
                 </tr>
             <tbody>
         </table>
@@ -83,9 +83,9 @@
                                 <td><%=expense.fee_per_page%></td>
                                 <% end %>
                                 <% if exps.index(expense) == 0 %>
-                                    <td <%="rowspan=#{exps.count}" unless exps.count==1%> ><%=total_fee%></td>
+                                    <td <%="rowspan=#{exps.count}" unless exps.count==1%> ><%=number_with_precision(total_fee, :precision => 2)%></td>
                                     <td <%="rowspan=#{exps.count}" unless exps.count==1%> ><%=tax%></td>
-                                    <td <%="rowspan=#{exps.count}" unless exps.count==1%> ><%=paid%></td>
+                                    <td <%="rowspan=#{exps.count}" unless exps.count==1%> ><%=number_with_precision(paid, :precision => 2)%></td>
                                     <td <%="rowspan=#{exps.count}" unless exps.count==1%> ><%=expense.bankno%></td>
                                     <td <%="rowspan=#{exps.count}" unless exps.count==1%> ><%=expense.bank%></td>
                                 <% end %>

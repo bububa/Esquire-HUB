@@ -520,4 +520,5 @@ $(document).ready(function(){
        $('.printable').jqprint();
        return false; 
     });
+    $("span.pie").peity("pie");
 });
