@@ -75,7 +75,7 @@ td .label {font-size:1em;}
 .esquire {
     font-family: times New Roman;
 }
-img.logo, img.gravatar {
+img.logo, img.gravatar, img.icon {
     vertical-align:middle;
 }
 .digg_pagination {

@@ -3,16 +3,16 @@
 <% if sales_user? %>
 <%= link_to @article.canceled ? "激活" : "取消", "javascript:void(0)", {:class=>"btn #{@article.canceled ? "success" : "danger"} cancel_article pull-right", "data-loading-text"=>"执行中...", "data-complete-text"=>"激活", "data-cancel-text"=>"取消", "data-value"=>@article.id, :disabled=>@article.closed}%>
     <% if @article.sales_sign_at.nil? %>
-        <%= link_to "修改", @article.canceled ? "#" : article_edit_path(@article), {:class=>"btn primary pull-right", :disabled=>@article.closed}%>
+        <%= link_to raw("<img src='/images/edit-white.png' class='icon'/>修改"), @article.canceled ? "#" : article_edit_path(@article), {:class=>"btn primary pull-right", :disabled=>@article.closed}%>
     <% end %>
 <% elsif editor_manager_user? %>
-<%= link_to "修改", @article.canceled ? "#" : article_edit_path(@article), {:class=>"btn primary pull-right", :disabled=>(@article.canceled||@article.closed)}%>
-<%= link_to "报销", expenses_article_path(@article), {:class=>"btn secondary pull-right"}%>
+<%= link_to raw("<img src='/images/edit-white.png' class='icon'/>修改"), @article.canceled ? "#" : article_edit_path(@article), {:class=>"btn primary pull-right", :disabled=>(@article.canceled||@article.closed)}%>
+<%= link_to raw("<img src='/images/expense.png' class='icon'/>报销"), expenses_article_path(@article), {:class=>"btn secondary pull-right"}%>
 <% elsif editor_user? %>
     <% if @article.editor_sign_at.nil? %>
-        <%= link_to "修改", @article.canceled ? "#" : article_edit_path(@article), {:class=>"btn primary pull-right", :disabled=>@article.canceled||@article.closed}%>
+        <%= link_to raw("<img src='/images/edit-white.png' class='icon'/>修改"), @article.canceled ? "#" : article_edit_path(@article), {:class=>"btn primary pull-right", :disabled=>@article.canceled||@article.closed}%>
     <% end %>
-    <%= link_to "报销", expenses_article_path(@article), {:class=>"btn secondary pull-right"}%>
+    <%= link_to raw("<img src='/images/expense.png' class='icon'/>报销"), expenses_article_path(@article), {:class=>"btn secondary pull-right"}%>
 <% end %>
     </h1>
 </div>

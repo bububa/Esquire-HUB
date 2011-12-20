@@ -1,7 +1,7 @@
 <div class="page-header">
     <h1>
         <%=link_to @article.subject, @article%> 报销类目
-        <a herf="javascript:void(0)" class="btn primary pull-right printbtn">打印</a>
+        <%=link_to raw("<img src='/images/printer-white.png' class='icon'/>打印"), "javascript:void(0)", :class=>"btn primary pull-right printbtn"%>
     </h1>
 </div>
 <ul class="tabs" data-tab="tabs">
