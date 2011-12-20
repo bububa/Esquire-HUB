@@ -13,7 +13,8 @@
                         <li class="<%= is_active?('users', 'index')%>"><%= link_to "用户管理", users_path %></li>
                     <% end %>
                 <% end %>
-                <li class="<%= is_active?('pages', 'about')%>"><%= link_to "关于", about_path %></a></li>
+                <li><%= link_to "制做幻灯片", "http://prezi.com", :target=>"_blank" %></a></li>
+                <li class="<%= is_active?('pages', 'about')%>"><%= link_to "关于", about_path %></li>
             </ul>
             <p class="pull-right">
                 <% if signed_in? %>

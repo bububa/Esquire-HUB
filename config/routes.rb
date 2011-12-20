@@ -1,5 +1,5 @@
 Esquire::Application.routes.draw do
-
+  
   resources :users
   resources :sessions, :only => [:new, :create, :destroy]
   resources :articles, :only => [:new, :create, :index, :show, :edit, :update]
