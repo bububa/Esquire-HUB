@@ -2,8 +2,7 @@
 
 require 'stringio'
 class MagzinesController < ApplicationController
-  before_filter :authenticate, :only => [:show]
-  before_filter :editor_or_editor_manager_or_supervisor_authenticate, :only => [:show, :stats]
+  before_filter :authenticate, :only => [:show, :stats]
   
   def index
     @title = "刊期"
