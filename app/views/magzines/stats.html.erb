@@ -26,6 +26,7 @@
     <% end %>
     <% @user_stats.each do |user_id, user_stats|%>
         <h3><%=User.fetch(user_id).name%></h3>
+        <% unless user_stats.nil? %>
         <table class="bordered-table zebra-striped">
             <thead><tr><th scope="col">期刊</th><th scope="col">完成度</th><th scope="col">迟交资料</th><th scope="col">迟交初稿</th><th scope="col">迟交定稿</th></tr></thead>
             <tbody>
@@ -40,5 +41,6 @@
                 <% end %>
             <tbody>
         </table>
+        <% end %>
     <% end %>
 </section>
