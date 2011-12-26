@@ -4,6 +4,7 @@ class Contact < ActiveRecord::Base
   
   validates :name,  :presence => true
   validates_uniqueness_of :name, :scope => [:career, :user_id]
+  validates_uniqueness_of :idcard, :scope => [:career, :user_id]
   
   after_save :after_save
   after_destroy :after_destroy

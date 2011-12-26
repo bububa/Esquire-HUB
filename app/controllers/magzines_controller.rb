@@ -3,7 +3,7 @@
 require 'stringio'
 class MagzinesController < ApplicationController
   before_filter :authenticate, :only => [:show]
-  before_filter :editor_or_editor_manager_or_supervisor_authenticate, :only => [:show]
+  before_filter :editor_or_editor_manager_or_supervisor_authenticate, :only => [:show, :stats]
   
   def index
     @title = "刊期"
@@ -108,6 +108,97 @@ class MagzinesController < ApplicationController
     io = StringIO.new('')
     book.write(io)
     render :text=>io.string
+  end
+  
+  def stats
+    total = 0
+    finished = 0
+    delay_material = 0
+    delay_draft = 0
+    delay_final = 0
+    no = nil
+    editors = Hash.new
+    sales = Hash.new
+    last_no = ArticleStats.maximum("no")
+    Article.order("no ASC").find_each do |article|
+      no = article.no if no.nil?
+      if no!=article.no
+        ArticleStats.new(:no=>no, :total=>total, :finished=>finished, :delay_material=>delay_material, :delay_draft=>delay_draft, :delay_final=>delay_final).save
+        editors.each do |editor_id, vals|
+          UserStats.new(:no=>no, :user_id=>editor_id, :total=>vals[:total], :finished=>vals[:finished], :delay_material=>vals[:delay_material], :delay_draft=>vals[:delay_draft], :delay_final=>vals[:delay_final], :user_type=>5).save
+        end
+      
+        sales.each do |editor_id, vals|
+          UserStats.new(:no=>no, :user_id=>editor_id, :total=>vals[:total], :finished=>vals[:finished], :delay_material=>vals[:delay_material], :delay_draft=>vals[:delay_draft], :delay_final=>vals[:delay_final], :user_type=>6).save
+        end
+        no = article.no
+        total = 0
+        finished = 0
+        delay_material = 0
+        delay_draft = 0
+        delay_final = 0
+        editors = Hash.new
+        sales = Hash.new
+        logger.debug "save stats for #{no}"
+      end
+      if !last_no.nil? && article.no < last_no
+        logger.debug "outdated"
+        break
+      end
+      unless article.editor_id.nil? || editors.has_key?(article.editor_id)
+        editors[article.editor_id] = {:total=>0, :finished=>0, :delay_material=>0, :delay_draft=>0, :delay_final=>0}
+      end
+      unless article.sales_id.nil? || sales.has_key?(article.sales_id)
+        sales[article.sales_id] = {:total=>0, :finished=>0, :delay_material=>0, :delay_draft=>0, :delay_final=>0}
+      end
+      
+      editors[article.editor_id][:total] += 1 unless article.editor_id.nil?
+      sales[article.sales_id][:total] += 1 unless article.sales_id.nil?
+      total += 1
+      if !article.print_at.nil? || article.closed
+        finished += 1
+        editors[article.editor_id][:finished] += 1 unless article.editor_id.nil?
+        sales[article.sales_id][:finished] += 1 unless article.sales_id.nil?
+      end
+      if !article.material_on.nil? && !article.material_at.nil? && article.material_on < Date.new(article.material_at.year, article.material_at.month, article.material_at.day)
+        delay_material += 1
+        editors[article.editor_id][:delay_material] += 1 unless article.editor_id.nil?
+        sales[article.sales_id][:delay_material] += 1 unless article.sales_id.nil?
+      end
+      if !article.draft_on.nil? && !article.draft_at.nil? && article.draft_on < Date.new(article.draft_at.year, article.draft_at.month, article.draft_at.day)
+        delay_draft += 1
+        editors[article.editor_id][:delay_draft] += 1 unless article.editor_id.nil?
+        sales[article.sales_id][:delay_draft] += 1 unless article.sales_id.nil?
+      end
+      if !article.final_on.nil? && !article.final_at.nil? && article.final_on < Date.new(article.final_at.year, article.final_at.month, article.final_at.day)
+        delay_final += 1
+        editors[article.editor_id][:delay_final] += 1 unless article.editor_id.nil?
+        sales[article.sales_id][:delay_final] += 1 unless article.sales_id.nil?
+      end
+    end
+    if total > 0
+      ArticleStats.new(:no=>no, :total=>total, :finished=>finished, :delay_material=>delay_material, :delay_draft=>delay_draft, :delay_final=>delay_final).save
+      editors.each do |editor_id, vals|
+        UserStats.new(:no=>no, :user_id=>editor_id, :total=>vals[:total], :finished=>vals[:finished], :delay_material=>vals[:delay_material], :delay_draft=>vals[:delay_draft], :delay_final=>vals[:delay_final], :user_type=>5).save
+      end
+    
+      sales.each do |editor_id, vals|
+        UserStats.new(:no=>no, :user_id=>editor_id, :total=>vals[:total], :finished=>vals[:finished], :delay_material=>vals[:delay_material], :delay_draft=>vals[:delay_draft], :delay_final=>vals[:delay_final], :user_type=>6).save
+      end
+    end
+    if admin_user? || editor_manager_user? || sales_manager_user? || supervisor_user?
+      @article_stats = ArticleStats.limit(10)
+      @user_stats = Hash.new
+      UserStats.where(:no => Array[*@article_stats.collect {|v,i| v.no }]).find_each do |user_stats|
+        unless @user_stats.has_key?(user_stats.user_id)
+          @user_stats[user_stats.user_id] = Array.new
+        end
+        @user_stats[user_stats.user_id] << user_stats
+      end
+    else
+      @user_stats = {current_user.id=>UserStats.where(:user_id=>current_user.id)}
+    end
+    @title = "策划执行统计"
   end
 
 end

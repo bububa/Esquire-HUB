@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
   has_many :contacts, :dependent => :destroy
   has_many :as_from_user, :class_name =>"Message", :foreign_key =>"from_user_id", :dependent => :destroy
   has_many :as_to_user, :class_name =>"Message", :foreign_key =>"to_user_id", :dependent => :destroy
+  has_many :user_stats, :dependent => :destroy
   
   email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   

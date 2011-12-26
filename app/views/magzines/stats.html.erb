@@ -1,0 +1,44 @@
+<div class="page-header">
+    <h1><%=@title%>
+    </h1>
+</div>
+<section>
+    <% unless @article_stats.nil?%>
+    <h2>统计</h2>
+    <table class="bordered-table zebra-striped">
+        <thead><tr><th scope="col">期刊</th><th scope="col">完成度</th><th scope="col">迟交资料</th><th scope="col">迟交初稿</th><th scope="col">迟交定稿</th></tr></thead>
+        <tbody>
+            <% @article_stats.each do |stats| %>
+            <tr>
+                <th scope="row"><%=link_to stats.no, magzine_path(stats.no)%></td>
+                <td><span class="pie"><%=stats.finished%>/<%=stats.total%></span><%=number_to_percentage(100.0*stats.finished/stats.total, :precision => 0)%> (<%=stats.finished%>/<%=stats.total%>)</td>
+                <td><span class="pie"><%=stats.delay_material/stats.total%></span><%=number_to_percentage(100.0*stats.delay_material/stats.total, :precision=>0)%> (<%=stats.delay_material%>)</td>
+                <td><span class="pie"><%=stats.delay_draft/stats.total%>/<%=stats.total%></span><%=number_to_percentage(100.0*stats.delay_draft/stats.total, :precision=>0)%> (<%=stats.delay_draft%>)</td>
+                <td><span class="pie"><%=stats.delay_final/stats.total%></span><%=number_to_percentage(100.0*stats.delay_final/stats.total, :precision=>0)%> (<%=stats.delay_final%>)</td>
+            </tr>
+            <% end %>
+        <tbody>
+    </table>
+    <hr/>
+    <% end %>
+    <% unless editor_user? || sales_user? || designer_user?%>
+    <h2>策划编辑及客户经理统计</h2>
+    <% end %>
+    <% @user_stats.each do |user_id, user_stats|%>
+        <h3><%=User.fetch(user_id).name%></h3>
+        <table class="bordered-table zebra-striped">
+            <thead><tr><th scope="col">期刊</th><th scope="col">完成度</th><th scope="col">迟交资料</th><th scope="col">迟交初稿</th><th scope="col">迟交定稿</th></tr></thead>
+            <tbody>
+                <% user_stats.each do |stats| %>
+                <tr>
+                    <th scope="row"><%=link_to stats.no, magzine_path(stats.no)%></td>
+                    <td><span class="pie"><%=stats.finished%>/<%=stats.total%></span><%=number_to_percentage(100.0*stats.finished/stats.total, :precision => 0)%> (<%=stats.finished%>/<%=stats.total%>)</td>
+                    <td><span class="pie"><%=stats.delay_material/stats.total%></span><%=number_to_percentage(100.0*stats.delay_material/stats.total, :precision=>0)%> (<%=stats.delay_material%>)</td>
+                    <td><span class="pie"><%=stats.delay_draft/stats.total%>/<%=stats.total%></span><%=number_to_percentage(100.0*stats.delay_draft/stats.total, :precision=>0)%> (<%=stats.delay_draft%>)</td>
+                    <td><span class="pie"><%=stats.delay_final/stats.total%></span><%=number_to_percentage(100.0*stats.delay_final/stats.total, :precision=>0)%> (<%=stats.delay_final%>)</td>
+                </tr>
+                <% end %>
+            <tbody>
+        </table>
+    <% end %>
+</section>

@@ -7,13 +7,15 @@
                 <li class="<%= is_active?('pages', 'home')%>"><%= link_to "首页", root_path %></li>
                 <% if signed_in? %>
                     <li class="<%= is_active?('articles', 'index')%>"><%= link_to "软文广告", articles_path %></li>
+                    <li class="<%= is_active?('magzines', 'stats')%>"><%= link_to "统计", stats_path %></li>
                     <li class="<%= is_active?('contacts', 'index')%>"><%= link_to "联系人", contacts_path %></li>
                     <li class="<%= is_active?('messages', 'index')%>" style="position:relative;"><%= link_to "消息", messages_path , :class=>"unread_count"%></li>
                     <% if admin_user? %>
                         <li class="<%= is_active?('users', 'index')%>"><%= link_to "用户管理", users_path %></li>
                     <% end %>
                 <% end %>
-                <li><%= link_to "制做幻灯片", "http://prezi.com", :target=>"_blank" %></a></li>
+                <li><%= link_to "制做幻灯片", "http://prezi.com", :target=>"_blank" %></li>
+                <li><%= link_to "灵感", "http://dribbble.com/", :target=>"_blank"%></li>
                 <li class="<%= is_active?('pages', 'about')%>"><%= link_to "关于", about_path %></li>
             </ul>
             <p class="pull-right">

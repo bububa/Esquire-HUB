@@ -1,2 +1,6 @@
 require 'jammit'
-Jammit.package!
+namespace :assets do
+  task :package do
+    Jammit.package!
+  end
+end

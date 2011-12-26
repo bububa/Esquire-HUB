@@ -11,7 +11,20 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111212102058) do
+ActiveRecord::Schema.define(:version => 20111220155442) do
+
+  create_table "article_stats", :force => true do |t|
+    t.date     "no"
+    t.integer  "total"
+    t.integer  "finished"
+    t.integer  "delay_material"
+    t.integer  "delay_draft"
+    t.integer  "delay_final"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "article_stats", ["no"], :name => "index_article_stats_on_no", :unique => true
 
   create_table "articles", :force => true do |t|
     t.date     "no"
@@ -107,6 +120,23 @@ ActiveRecord::Schema.define(:version => 20111212102058) do
   add_index "messages", ["from_user_id"], :name => "index_messages_on_from_user_id"
   add_index "messages", ["to_user_id"], :name => "index_messages_on_to_user_id"
   add_index "messages", ["unread"], :name => "index_messages_on_unread"
+
+  create_table "user_stats", :force => true do |t|
+    t.date     "no"
+    t.integer  "total"
+    t.integer  "finished"
+    t.integer  "delay_material"
+    t.integer  "delay_draft"
+    t.integer  "delay_final"
+    t.integer  "user_id"
+    t.integer  "user_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "user_stats", ["no", "user_id"], :name => "index_user_stats_on_no_and_user_id", :unique => true
+  add_index "user_stats", ["no", "user_type"], :name => "index_user_stats_on_no_and_user_type"
+  add_index "user_stats", ["user_id"], :name => "index_user_stats_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "name"

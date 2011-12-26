@@ -4,7 +4,7 @@ Esquire::Application.routes.draw do
   resources :sessions, :only => [:new, :create, :destroy]
   resources :articles, :only => [:new, :create, :index, :show, :edit, :update]
   resources :expenses, :only => [:new, :create, :index, :edit, :update, :destroy]
-  resources :magzines, :only => [:index, :show]
+  resources :magzines, :only => [:index, :show, :stats]
   resources :contacts, :only => [:index, :show, :new, :create, :destroy, :edit, :update]
   resources :messages, :only => [:index, :destroy, :read, :create, :unread_count, :mark_read]
   
@@ -25,6 +25,7 @@ Esquire::Application.routes.draw do
   match '/expense/delete/:id', :to=>'expenses#destroy'
   match '/expenses/excel/:no', :to=>'magzines#export_excel'
   match '/magzine/:no', :to=>'magzines#show'
+  match '/stats', :to=>'magzines#stats'
   match '/contact/delete/:id', :to=>'contacts#destroy'
   match '/contact/edit/:id', :to=>'contacts#edit'
   match '/contact/show', :to=>'contacts#show'
