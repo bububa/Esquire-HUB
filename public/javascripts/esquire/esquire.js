@@ -514,6 +514,7 @@ $(document).ready(function(){
     	fade_out_speed: 2000, // how fast the notices fade out
     	time: 10000 // hang on the screen for...
     });
+    $('.topbar').dropdown();
     mark_read();
     receive_message();
     $('a.printbtn').click(function(){

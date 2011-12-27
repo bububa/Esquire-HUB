@@ -8,7 +8,8 @@ Esquire::Application.routes.draw do
   resources :contacts, :only => [:index, :show, :new, :create, :destroy, :edit, :update]
   resources :messages, :only => [:index, :destroy, :read, :create, :unread_count, :mark_read]
   
-  match '/about', :to => 'pages#about'
+  match '/contactus', :to => 'pages#contactus'
+  match '/help', :to => 'pages#help'
   match '/signup',  :to => 'users#new'
   match '/signin',  :to => 'sessions#new'
   match '/signout', :to => 'sessions#destroy'

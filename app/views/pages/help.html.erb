@@ -1,0 +1,13 @@
+<div class="page-header">
+    <h1>帮助</h1>
+</div>
+<dl>
+    <dt>Q: 为什么注册后不能登录?</dt>
+    <dd>A: 新注册用户需要管理员分配用户权限后才能登录，因此请在登录后联系管理员<%=mail_to "thepeppersstudio@gmail.com" %>。</dd>
+    <dt>Q: 数据是否会丢失?</dt>
+    <dd>A: Esquire Hub由<%=link_to "heroku", "http://heroku.com", :target=>"_blank"%>云驱动, 数据库信息每月自动备份4次， 万一出现数据库错误，至少可以恢复到本月初数据。</dd>
+    <dt>Q: 为什么有时候网站打开速度慢？</dt>
+    <dd>A: Esquire Hub目前使用<%=link_to "heroku", "http://heroku.com", :target=>"_blank"%>免费云服务 (Web Dynos=0, Shared Database=5M). 为了获得更快的速度需要提高<em>Web Dynos($0.05/小时)</em>数量，或者使用Dedicated Databases.此升级费用最低需要<em>$35/月</em>。具体费用参见<%=link_to "heroku Pricing页面", "http://heroku.com/pricing", :target=>"_blank"%></dd>
+    <dt>Q: 储存数据是无限的吗？</dt>
+    <dd>A: 不是。Esquire Hub目前使用<%=link_to "heroku", "http://heroku.com", :target=>"_blank"%>Shared Database 5M空间, 按每条数据1Kb计算大约可以储存5000条。如果需要更大的空间可以升级到<em>Shared Database 20M</em>或者使用<em>Dedicated Database</em>, 此升级费用最低需要<em>$15/月</em>。具体费用参见<%=link_to "heroku Pricing页面", "http://heroku.com/pricing", :target=>"_blank"%></dd>
+</dl>

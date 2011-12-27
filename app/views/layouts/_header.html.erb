@@ -14,10 +14,18 @@
                         <li class="<%= is_active?('users', 'index')%>"><%= link_to "用户管理", users_path %></li>
                     <% end %>
                 <% end %>
-                <li><%= link_to "制做幻灯片", "http://prezi.com", :target=>"_blank" %></li>
-                <li><%= link_to "GTD®", "http://doit.im/", :target=>"_blank"%></li>
-                <li><%= link_to "灵感", "http://dribbble.com/", :target=>"_blank"%></li>
-                <li class="<%= is_active?('pages', 'about')%>"><%= link_to "关于", about_path %></li>
+                <li class="dropdown" data-dropdown="dropdown">
+                    <%=link_to "工具", "#", :class=>"dropdown-toggle"%>
+                    <ul class="dropdown-menu">
+                        <li><%= link_to "制做幻灯片", "http://prezi.com", :target=>"_blank" %></li>
+                        <li><%= link_to "GTD®", "http://doit.im/", :target=>"_blank"%></li>
+                        <li><%= link_to "文件存储", "http://droplr.com/", :target=>"_blank"%></li>
+                        <li class="divider"></li>
+                        <li><%= link_to "灵感", "http://dribbble.com/", :target=>"_blank"%></li>
+                    </ul>
+                </li>
+                <li class="<%= is_active?('pages', 'help')%>"><%= link_to "帮助", help_path %></li>
+                <li class="<%= is_active?('pages', 'contactus')%>"><%= link_to "联系我们", contactus_path %></li>
             </ul>
             <p class="pull-right">
                 <% if signed_in? %>
