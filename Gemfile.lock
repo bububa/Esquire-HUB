@@ -5,7 +5,7 @@ GEM
       Platform (>= 0.4.0)
       open4
     Platform (0.4.0)
-    actionmailer (3.1.1)
+    actionmailer (3.2.15)
       actionpack (= 3.1.1)
       mail (~> 2.3.0)
     actionpack (3.1.1)
